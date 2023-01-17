@@ -1,11 +1,18 @@
+import java.io.FileNotFoundException;
+import java.util.*;
+
+import fileRepository.FileRepository;
 import product.*;
+import store.Store;
 
 
 public class App {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		
-		System.out.println(Status.ACTIVE.getCode());
+		Store store = new Store();
+		store.getStoreDetails();
+		System.out.println(store);
 
 	}
 
