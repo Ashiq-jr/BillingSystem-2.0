@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
 
 public class AdminFrame extends JFrame {
 
@@ -36,6 +37,10 @@ public class AdminFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("ADMIN");
+		lblNewLabel.setBounds(116, 68, 171, 84);
+		contentPane.add(lblNewLabel);
 	}
-
 }

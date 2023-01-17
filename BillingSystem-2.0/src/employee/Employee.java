@@ -1,8 +1,8 @@
 package employee;
 
-import personalDetails.PersonalDetails;
+import personalInfo.PersonalInfo;
 
-public class Employee extends PersonalDetails{
+public class Employee extends PersonalInfo{
 	
 
 	Designation designation;

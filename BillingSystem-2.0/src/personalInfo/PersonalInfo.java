@@ -1,7 +1,7 @@
-package personalDetails;
+package personalInfo;
 
 
-public class PersonalDetails {
+public class PersonalInfo {
 	
 	protected int id;
 	protected String name;
@@ -9,11 +9,11 @@ public class PersonalDetails {
 	protected String mailId;
 	
 	
-	public PersonalDetails() {
+	public PersonalInfo() {
 	
 	}
 	
-	public PersonalDetails(int id, String name, long mobileNum, String mailId) {
+	public PersonalInfo(int id, String name, long mobileNum, String mailId) {
 		
 		this.id = id;
 		this.name = name;

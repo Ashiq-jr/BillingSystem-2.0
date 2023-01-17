@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import adminFrame.AdminFrame;
+import loginInfo.LoginInfo;
 import managerFrame.ManagerFrame;
 import operatorFrame.OperatorFrame;
 
@@ -17,6 +18,9 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
@@ -87,35 +91,68 @@ public class MainFrame extends JFrame {
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(textField_Name.getText().toString().equals("admin") && textField_Password.getText().toString().equals("admin"))
-				{
-					AdminFrame adFrame = new AdminFrame();
-					adFrame.setTitle("Welcome " + textField_Name.getText());
-					adFrame.setVisible(true);
-					dispose();
+
+				LoginInfo li = new LoginInfo();
+				List<LoginInfo> logList = new ArrayList<LoginInfo>();
+				try {
+					logList = li.getLoginInfoList();
+				} catch (FileNotFoundException e1) {
+					System.out.println("empty list");
 				}
-				else if(textField_Name.getText().toString().equals("manager") && textField_Password.getText().toString().equals("manager"))
+				int i = 0;
+				for(LoginInfo x : logList)
 				{
-					ManagerFrame manFrame = new ManagerFrame();
-					manFrame.setTitle("Welcome " + textField_Name.getText());
-					manFrame.setVisible(true);
-					dispose();
+					i++;
+					if(textField_Name.getText().toString().equals(x.getName()) && textField_Password.getText().toString().equals(x.getPassword()))
+					{
+						if(x.getDesignation().toString().equals("OPERATOR"))
+						{
+							OperatorFrame opFrame = new OperatorFrame();
+							opFrame.setTitle("Welcome " + textField_Name.getText());
+							opFrame.setVisible(true);
+							textField_Name.setText("");
+							textField_Password.setText("");
+							dispose();
+							break;
+						}
+						else if(x.getDesignation().toString().equals("MANAGER"))
+						{
+							ManagerFrame manFrame = new ManagerFrame();
+							manFrame.setTitle("Welcome " + textField_Name.getText());
+							manFrame.setVisible(true);
+							textField_Name.setText("");
+							textField_Password.setText("");
+							dispose();
+							break;
+						}
+						else if(x.getDesignation().toString().equals("ADMIN"))
+						{
+							AdminFrame adFrame = new AdminFrame();
+							adFrame.setTitle("Welcome " + textField_Name.getText());
+							adFrame.setVisible(true);
+							textField_Name.setText("");
+							textField_Password.setText("");
+							dispose();
+							break;
+						}
+					}	
+					
+					else if(i >= logList.size())
+					{
+						JOptionPane.showMessageDialog(null, "INVALID INFO", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
+					
 				}
-				else if(textField_Name.getText().toString().equals("operator") && textField_Password.getText().toString().equals("operator"))
-				{
-					OperatorFrame opFrame = new OperatorFrame();
-					opFrame.setTitle("Welcome " + textField_Name.getText());
-					opFrame.setVisible(true);
-					dispose();
-				}
-				else
-				{
-			           JOptionPane.showMessageDialog(null, "INVALID ACCOUNT DETAILS",
-                               "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-				
-	
+
 			}
 		});
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 }

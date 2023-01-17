@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
 
 public class ManagerFrame extends JFrame {
 
@@ -36,6 +37,11 @@ public class ManagerFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("MANAGER");
+		lblNewLabel.setBounds(153, 101, 94, 55);
+		contentPane.add(lblNewLabel);
 	}
 
 }

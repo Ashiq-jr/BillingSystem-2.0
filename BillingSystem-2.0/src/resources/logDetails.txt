@@ -1,0 +1,4 @@
+ADMIN|ashiq|check
+MANAGER|102|jr
+OPERATOR|103|root
+OPERATOR|104|prag

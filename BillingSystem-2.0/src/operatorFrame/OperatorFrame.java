@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
 
 public class OperatorFrame extends JFrame {
 
@@ -36,6 +37,11 @@ public class OperatorFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("OPERATOR");
+		lblNewLabel.setBounds(162, 78, 117, 109);
+		contentPane.add(lblNewLabel);
 	}
 
 }

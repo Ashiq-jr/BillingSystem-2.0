@@ -1,8 +1,8 @@
 package customer;
 
-import personalDetails.PersonalDetails;
+import personalInfo.PersonalInfo;
 
-public class Customer extends PersonalDetails{
+public class Customer extends PersonalInfo{
 	
 public Customer(){
 
