@@ -11,12 +11,10 @@ public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-//		LoginInfo li = new LoginInfo();
-//		List<LoginInfo> list = li.getOperatorLoginInfoList();
-//		for(LoginInfo x : list)
-//		{
-//			System.out.println(x);
-//		}
+		LoginInfo li = new LoginInfo();
+		LoginInfo li2 = li.getInfoUsingId(102);
+		System.out.println(li2);
+
 
 	}
 

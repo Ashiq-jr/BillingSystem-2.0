@@ -1,16 +1,38 @@
 package store;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import fileRepository.FileRepository;
 
 public class Store {
-	
+
 	String name;
 	Address address;
 	String gstNumber;
 	long mobileNum;
 	String mailId;
+	
+	public String getName() {
+		return name;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+	public long getMobileNum() {
+		return mobileNum;
+	}
+
+	public String getMailId() {
+		return mailId;
+	}
+	
 	
 	public Store() {
 		
@@ -52,6 +74,13 @@ public class Store {
 		}
 	}
 	
+	public void updateStoreDetails(Store store) throws IOException
+	{
+		Address address = store.getAddress();		
+		String temp = store.getName() + "|" + address.getDoorNo() + "|" + address.getArea() + "|" + address.city + "|" + address.getState() + "|" + address.getPincode() + "|" + store.getGstNumber() + "|" + store.getMobileNum() + "|" + store.getMailId();
+		FileRepository fp = new FileRepository();
+		fp.updateStoreInfoOnFile(temp);
+	}
 	@Override
 	public String toString()
 	{

@@ -14,7 +14,6 @@ public class Address {
 	}
 	
 	public Address(String doorNo, String area, String city, String state, int pincode) {
-		super();
 		this.doorNo = doorNo;
 		this.area = area;
 		this.city = city;
