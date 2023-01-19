@@ -10,11 +10,13 @@ public class FileRepository {
 	final String storeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\store.txt";
 	final String loginInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\logDetails.txt";
 	final String employeeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\employeeInfo.txt";
+	final String productInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\product.txt";
+	final String categoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\category.txt";
+	final String SubCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\subcategory.txt";
+
 	
 	
-	
-	
-	
+	//Reading
 	public List<String[]> getStoreDetailsAsList() throws FileNotFoundException
 	{
 		list.clear();
@@ -33,6 +35,20 @@ public class FileRepository {
 		return list = loadFileData(employeeInfoPath);
 	}
 	
+	public List<String[]> getCategoriesAsList() throws FileNotFoundException
+	{
+		list.clear();
+		return list = loadFileData(categoryInfoPath);
+	}
+	
+	public List<String[]> getSubCategoriesAsList() throws FileNotFoundException
+	{
+		list.clear();
+		return list = loadFileData(SubCategoryInfoPath);
+	}
+	
+	
+	//Writing
 	public void writeNewInfoOnEmpInfoFile(String info) throws IOException
 	{
 		writeNewDataInFile(employeeInfoPath, info);
@@ -45,12 +61,12 @@ public class FileRepository {
 	
 	public void updateLoginInfoOnFile(String info) throws IOException
 	{
-		overrideDataInFile(loginInfoPath, info);
+		overWriteDataInFile(loginInfoPath, info);
 	}
 	
 	public void updateStoreInfoOnFile(String info) throws IOException
 	{
-		overrideDataInFile(storeInfoPath, info);
+		overWriteDataInFile(storeInfoPath, info);
 	}
 	
 	
@@ -83,7 +99,7 @@ public class FileRepository {
 		writer.close();		
 	}
 	
-	public static void overrideDataInFile(String path, String info) throws IOException
+	public static void overWriteDataInFile(String path, String info) throws IOException
 	{
 		FileWriter writer = new FileWriter(path);
 		writer.write(info);

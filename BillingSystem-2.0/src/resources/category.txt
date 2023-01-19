@@ -1,0 +1,5 @@
+Staples
+Snacks&Beverages
+PackagedFood
+PersonalCare
+HouseholdCare
