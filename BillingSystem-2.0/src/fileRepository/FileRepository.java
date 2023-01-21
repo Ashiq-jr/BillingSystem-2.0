@@ -3,6 +3,12 @@ package fileRepository;
 import java.io.*;
 import java.util.*;
 
+import category.Category;
+import product.Product;
+import product.Status;
+import product.TaxCategory;
+import subCategory.SubCategory;
+
 public class FileRepository {
 	
 	static List<String[]> list = new ArrayList<String[]>();
@@ -12,11 +18,12 @@ public class FileRepository {
 	final String employeeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\employeeInfo.txt";
 	final String productInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\product.txt";
 	final String categoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\category.txt";
-	final String SubCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\subcategory.txt";
+	final String subCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\subcategory.txt";
+	final String taxCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\taxCategory.txt";
 
 	
 	
-	//Reading
+	//Reading file
 	public List<String[]> getStoreDetailsAsList() throws FileNotFoundException
 	{
 		list.clear();
@@ -44,19 +51,32 @@ public class FileRepository {
 	public List<String[]> getSubCategoriesAsList() throws FileNotFoundException
 	{
 		list.clear();
-		return list = loadFileData(SubCategoryInfoPath);
+		return list = loadFileData(subCategoryInfoPath);
+	}
+	
+	public List<String[]> getTaxCategoriesAsList() throws FileNotFoundException
+	{
+		list.clear();
+		return list = loadFileData(taxCategoryInfoPath);
+	}
+	
+	// Return the Path of ProductInfo File
+	
+	public String getProductInfoPath()
+	{
+		return productInfoPath;
 	}
 	
 	
 	//Writing
 	public void writeNewInfoOnEmpInfoFile(String info) throws IOException
 	{
-		writeNewDataInFile(employeeInfoPath, info);
+		writeNewInfoOnFile(employeeInfoPath, info);
 	}
 	
 	public void writeNewInfoOnLoginInfoFile(String info) throws IOException
 	{
-		writeNewDataInFile(loginInfoPath, info);
+		writeNewInfoOnFile(loginInfoPath, info);
 	}
 	
 	public void updateLoginInfoOnFile(String info) throws IOException
@@ -69,6 +89,23 @@ public class FileRepository {
 		overWriteDataInFile(storeInfoPath, info);
 	}
 	
+	public void addNewProductInfoOnFile(String info) throws IOException
+	{
+		writeNewInfoOnFile(productInfoPath, info);
+	}
+	
+	public void addNewCategoryInfoOnFile(String info) throws IOException
+	{
+		writeNewInfoOnFile(categoryInfoPath, info);
+	}
+	public void addNewSubCategoryInfoOnFile(String info) throws IOException
+	{
+		writeNewInfoOnFile(subCategoryInfoPath, info);
+	}
+	public void addNewTaxCategoryInfoOnFile(String info) throws IOException
+	{
+		writeNewInfoOnFile(taxCategoryInfoPath, info);
+	}
 	
 	
 	
@@ -92,7 +129,7 @@ public class FileRepository {
 		return list;
 	}
 	
-	public static void writeNewDataInFile(String path, String info) throws IOException
+	public static void writeNewInfoOnFile(String path, String info) throws IOException
 	{
 		FileWriter writer = new FileWriter(path, true);
 		writer.write(info);

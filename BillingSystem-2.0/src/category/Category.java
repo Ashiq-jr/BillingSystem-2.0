@@ -12,6 +12,7 @@ public class Category {
 	String name;
 	
 	static List<Category> list = new ArrayList<Category>();
+	static List<String> categoryNamesList = new ArrayList<String>();
 	
 	//Constructors
 	public Category(){
@@ -32,9 +33,8 @@ public class Category {
 	public List<Category> loadCategory() throws IOException
 	{
 		list.clear();
-		List<String[]> al = new ArrayList<String[]>();
 		FileRepository fp = new FileRepository();
-		al = fp.getCategoriesAsList();
+		List<String[]> al = fp.getCategoriesAsList();
 		
 		for(String[] x : al)
 		{
@@ -44,6 +44,26 @@ public class Category {
 		}
 		
 		return list;
+	}
+	
+	//Method to get List of Category Names
+	public List<String> getCategoryNamesList() throws IOException
+	{
+		list.clear();
+		list = this.loadCategory();
+		for(Category x : list)
+		{
+			categoryNamesList.add(x.getName());
+		}
+		
+	return categoryNamesList;
+	}
+	
+	//Method to Add Category	
+	public void addCategory(String name) throws IOException
+	{
+		FileRepository fp = new FileRepository();
+		fp.addNewCategoryInfoOnFile("\n" + name.toUpperCase());
 	}
 
 }

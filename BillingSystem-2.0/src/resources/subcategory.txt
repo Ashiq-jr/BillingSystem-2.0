@@ -1,25 +1,25 @@
-Staples|Rice
-Staples|Dhals&Pulses
-Staples|Atta&Flour
-Staples|Oil
-Staples|Masala
-Staples|Sugar&Salt
-Staples|DryFruits&Nuts
-Snacks&Beverages|Tea
-Snacks&Beverages|Coffee
-Snacks&Beverages|Biscuits
-Snacks&Beverages|Chips&Namkeen
-Snacks&Beverages|Juice&Water
-Snacks&Beverages|HealthDrinkMix
-PackagedFood|Cereals
-PackagedFood|Noodles&Pasta
-PackagedFood|Pickles&Vinegar
-PackagedFood|Jams&Ketchup
-PersonalCare|HairOil&Talc
-PersonalCare|Soap&Shampoo
-PersonalCare|ToothPaste&Brush
-PersonalCare|ShavingNeeds
-HouseholdCare|Detergents
-HouseholdCare|Floor&BathroomCleaners
-HouseholdCare|UtensilCleaners
-RHouseholdCaree|Repellants
+STAPLES|RICE
+STAPLES|DHALS&PULSES
+STAPLES|ATTA&FLOUR
+STAPLES|OIL
+STAPLES|MASALA
+STAPLES|SUGAR&SALT
+STAPLES|DRYFRUITS&NUTS
+SNACKS&BEVERAGES|TEA
+SNACKS&BEVERAGES|COFFEE
+SNACKS&BEVERAGES|BISCUITS
+SNACKS&BEVERAGES|CHIPS&NAMKEEN
+SNACKS&BEVERAGES|JUICE&WATER
+SNACKS&BEVERAGES|HEALTHDRINK MIX
+PACKAGED FOOD|CEREALS
+PACKAGED FOOD|NOODLES&PASTA
+PACKAGED FOOD|PICKLES&VINEGAR
+PACKAGED FOOD|JAMS&KETCHUP
+PERSONAL CARE|HAIROIL&TALC
+PERSONAL CARE|SOAP&SHAMPOO
+PERSONAL CARE|TOOTHPASTE&BRUSH
+PERSONAL CARE|SHAVING NEEDS
+HOUSEHOLD CARE|DETERGENTS
+HOUSEHOLD CARE|FLOOR&BATHROOMCLEANERS
+HOUSEHOLD CARE|UTENSIL CLEANERS
+HOUSEHOLD CARE|REPELLANTS

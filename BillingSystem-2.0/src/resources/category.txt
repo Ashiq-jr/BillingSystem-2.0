@@ -1,5 +1,5 @@
-Staples
-Snacks&Beverages
-PackagedFood
-PersonalCare
-HouseholdCare
+STAPLES
+SNACKS&BEVERAGES
+PACKAGED FOOD
+PERSONAL CARE
+HOUSEHOLD CARE

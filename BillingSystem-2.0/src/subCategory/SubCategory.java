@@ -1,6 +1,7 @@
 package subCategory;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 import category.Category;
@@ -12,6 +13,7 @@ public class SubCategory {
 	String name;
 	
 	static List<SubCategory> list = new ArrayList<SubCategory>();
+	static List<String> nameList = new ArrayList<String>();
 	
 	//Constructors
 	public SubCategory() {
@@ -48,6 +50,28 @@ public class SubCategory {
 		}
 		
 		return list;
+	}
+	
+	//Method to Add SubVategory
+	
+	public void addSubCategory(SubCategory subcategory) throws IOException
+	{
+		FileRepository fp = new FileRepository();
+		String info = "\n" + subcategory.getCategory().getName() + "|" + subcategory.getName();
+		fp.addNewSubCategoryInfoOnFile(info);
+	}
+	
+	//Method to get List of Sub Category Names
+	
+	public List<String> getNameList() throws FileNotFoundException
+	{
+		list.clear();
+		list = this.loadSubCategory();
+		for(SubCategory x : list)
+		{
+			nameList.add(x.getName());
+		}
+		return nameList;
 	}
 
 }

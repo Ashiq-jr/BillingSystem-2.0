@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.awt.event.ActionEvent;
 
 public class AdminFrame extends JFrame {
@@ -346,13 +347,13 @@ public class AdminFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				Employee employee = new Employee();
-				HashMap<Integer, Employee> hMap = new HashMap<Integer, Employee>();
+				TreeMap<Integer, Employee> tMap = new TreeMap<Integer, Employee>();
 				try {
-					hMap = employee.loadEmployeeInfo();
+					tMap = employee.loadEmployeeInfo();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
-				if(hMap.containsKey(Integer.parseInt(tFieldId.getText().toString())))
+				if(tMap.containsKey(Integer.parseInt(tFieldId.getText().toString())))
 				{
 					String pwd = tFieldPwd.getText().toString();
 					LoginInfo info = new LoginInfo();

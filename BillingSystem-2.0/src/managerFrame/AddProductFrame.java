@@ -7,9 +7,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import category.Category;
+import product.Product;
+import product.Status;
+import product.TaxCategory;
 import subCategory.SubCategory;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -21,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
-public class AddProduct extends JFrame {
+public class AddProductFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lblTitle;
@@ -39,30 +43,12 @@ public class AddProduct extends JFrame {
 	private JComboBox<String> cBoxSubCategory;
 	static List<Category> categoryList;
 	static List<SubCategory> subCategoryList;
+	static List<TaxCategory> taxCategoryList;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddProduct frame = new AddProduct();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 * @throws IOException 
-	 */
-	public AddProduct() throws IOException {
+	
+	public AddProductFrame() throws IOException {
 		setTitle("ADD PRODUCT");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 573, 484);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -146,31 +132,104 @@ public class AddProduct extends JFrame {
 		
 		cBoxCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				String temp = cBoxCategory.getSelectedItem().toString();
-				SubCategory subCategory = new SubCategory();
-				try {
-					subCategoryList = subCategory.loadSubCategory();
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-				cBoxSubCategory.removeAllItems();
-				for(SubCategory x : subCategoryList)
+				if(cBoxCategory.getSelectedItem() != null)
 				{
-					if(x.getCategory().getName().equals(temp))
-					{
-						cBoxSubCategory.addItem(x.getName());
+					String temp = cBoxCategory.getSelectedItem().toString();
+					SubCategory subCategory = new SubCategory();
+					try {
+						subCategoryList = subCategory.loadSubCategory();
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
 					}
-						
+					cBoxSubCategory.removeAllItems();
+					for(SubCategory x : subCategoryList)
+					{
+						if(x.getCategory().getName().equals(temp))
+						{
+							cBoxSubCategory.addItem(x.getName());
+						}
+							
+					}
+					cBoxSubCategory.setSelectedItem(null);
 				}
-				cBoxSubCategory.setSelectedItem(null);
 			}
 		});
-
+		
+		//Adding Values to TaxCategory ComboBox
+		
+		TaxCategory tax = new TaxCategory();
+		taxCategoryList = tax.loadTaxcategory();
+		cBoxTaxCat.removeAllItems();
+		for(TaxCategory x : taxCategoryList)
+		{
+			cBoxTaxCat.addItem(x.getName());
+		}
+		cBoxTaxCat.setSelectedItem(null);
 		
 		
+		//Adding a new Product
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Product product = new Product();
+				int id  = 0;
+				try {
+					 id = product.generateProductId();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+				String name = tFieldName.getText();
+				String cat = cBoxCategory.getSelectedItem().toString();
+				Category category = new Category(cat);
+				String subCat = cBoxSubCategory.getSelectedItem().toString();
+				SubCategory subCategory = new SubCategory(category, subCat);
+				double price =Double.parseDouble(tFieldPrice.getText());
+				String tax = cBoxTaxCat.getSelectedItem().toString();
+				TaxCategory taxCategory = new TaxCategory();
+				double taxValue = 0;
+				try {
+					 taxValue = taxCategory.getTaxValue(tax);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				taxCategory = new TaxCategory(tax, taxValue);
+				
+				product = new Product(id, name, category, subCategory, price, taxCategory, Status.valueOf("ACTIVE") );
+				
+				try {
+					
+					List<String> nameList = product.getNameListOfProducts();
+					if(!nameList.contains(name))
+					{
+						product.addNewProduct(product);
+						JOptionPane.showMessageDialog(null, "PRODUCT ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "PRODUCT ALREADY EXISTS", "FAILED", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				} catch (IOException e1) {
+					
+				}
+				
+				cBoxCategory.setSelectedItem(null);
+				cBoxSubCategory.setSelectedItem(null);
+				tFieldName.setText("");
+				tFieldPrice.setText("");
+				cBoxTaxCat.setSelectedItem(null);
+			}
+		});
+		
+		//Reseting the Fields
+		
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				cBoxCategory.setSelectedItem(null);
+				cBoxSubCategory.setSelectedItem(null);
+				tFieldName.setText("");
+				tFieldPrice.setText("");
+				cBoxTaxCat.setSelectedItem(null);
 			}
 		});
 	}
