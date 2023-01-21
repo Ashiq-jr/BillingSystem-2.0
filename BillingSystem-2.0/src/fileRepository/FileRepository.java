@@ -106,7 +106,10 @@ public class FileRepository {
 	{
 		writeNewInfoOnFile(taxCategoryInfoPath, info);
 	}
-	
+	public void updateCategoryInfoOnFile(String info)throws IOException
+	{
+		overWriteDataInFile(categoryInfoPath, info);
+	}
 	
 	
 	

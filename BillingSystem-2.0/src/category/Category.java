@@ -3,6 +3,7 @@ package category;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import fileRepository.FileRepository;
@@ -64,6 +65,36 @@ public class Category {
 	{
 		FileRepository fp = new FileRepository();
 		fp.addNewCategoryInfoOnFile("\n" + name.toUpperCase());
+	}
+	
+	//Method to Remove a Category
+	public void removeCategory(String remove) throws IOException
+	{
+		list.clear();
+		list = this.loadCategory();
+		String info = "";
+		Iterator<Category> itr = list.iterator();
+		while(itr.hasNext())
+		{
+			Category cat = (Category)itr.next();
+			if(cat.getName().equals(remove))
+			{
+				itr.remove();
+			}
+			else
+			{
+				info += cat.getName() + "\n";
+			}
+		}
+		FileRepository fp = new FileRepository();
+		fp.updateCategoryInfoOnFile(info.trim());
+		
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.name;
 	}
 
 }

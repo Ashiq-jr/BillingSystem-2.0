@@ -28,8 +28,36 @@ public class App {
 //		p.addNewProduct(p);
 //		System.out.print("added");
 		
-		Category cat = new Category();
-		cat.addCategory("test");
+
+		
+		List<Category> list = new ArrayList<Category>();
+		Category cat1 = new Category("test1");
+		Category cat2 = new Category("test2");
+		Category cat3 = new Category("test3");
+		Category cat4 = new Category("test4");
+		Category cat5 = new Category("test5");
+		list.add(cat1);
+		list.add(cat2);
+		list.add(cat3);
+		list.add(cat4);
+		list.add(cat5);
+		
+		String info = "";
+		Iterator<Category> itr = list.iterator();
+		while(itr.hasNext())
+		{
+			Category cat = (Category)itr.next();
+			if(cat.getName().equals("test1"))
+			{
+				itr.remove();
+			}
+			else
+			{
+				info += cat.getName() + "\n";
+			}
+		}
+		System.out.println(info);
+
 		
 
 }

@@ -33,6 +33,17 @@ public class ManagerFrame extends JFrame {
 	private JButton btnAddSubCategory;
 	private JLabel lblTitle;
 	private JTextField tFieldCategory;
+	private JLabel lblAddTaxCat;
+	private JButton btnAddTaxCat;
+	private JPanel panel_1;		
+	private JLabel lblRemoveACategory;
+	private JLabel lblRemoveSubCategory;
+	private JButton btnRemoveProdCat;
+	private JButton btnRemoveSubCat;
+	private JLabel lblRemoveTaxCategory;
+	private JButton btnRemoveTaxCat;
+	private JLabel lblEditTaxPercentage;
+	private JButton btnEditTaxPercent;
 
 	public ManagerFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,7 +56,7 @@ public class ManagerFrame extends JFrame {
 		
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-		panel.setBounds(129, 115, 578, 217);
+		panel.setBounds(131, 80, 578, 217);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -81,12 +92,12 @@ public class ManagerFrame extends JFrame {
 		panel.add(tFieldCategory);
 		tFieldCategory.setColumns(10);
 		
-		JLabel lblAddTaxCat = new JLabel("ADD TAX CATEGORY  :");
+		lblAddTaxCat = new JLabel("ADD TAX CATEGORY  :");
 		lblAddTaxCat.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
 		lblAddTaxCat.setBounds(44, 166, 186, 29);
 		panel.add(lblAddTaxCat);
 		
-		JButton btnAddTaxCat = new JButton("LOAD\r\n");
+		btnAddTaxCat = new JButton("LOAD\r\n");
 		btnAddTaxCat.setBounds(242, 168, 85, 26);
 		panel.add(btnAddTaxCat);
 		
@@ -95,6 +106,62 @@ public class ManagerFrame extends JFrame {
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setBounds(10, 10, 831, 77);
 		contentPane.add(lblTitle);
+		
+		panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		panel_1.setBounds(25, 323, 373, 356);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		lblRemoveACategory = new JLabel("REMOVE A CATEGORY  :");
+		lblRemoveACategory.setBounds(34, 32, 186, 15);
+		lblRemoveACategory.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		panel_1.add(lblRemoveACategory);
+		
+		lblRemoveSubCategory = new JLabel("REMOVE SUB CATEGORY  :");
+		lblRemoveSubCategory.setBounds(33, 105, 170, 15);
+		lblRemoveSubCategory.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		panel_1.add(lblRemoveSubCategory);
+		
+		btnRemoveProdCat = new JButton("LOAD\r\n");
+		btnRemoveProdCat.setBounds(249, 27, 85, 26);
+		panel_1.add(btnRemoveProdCat);
+		
+		btnRemoveSubCat = new JButton("LOAD\r\n");
+		btnRemoveSubCat.setBounds(249, 100, 85, 26);
+		panel_1.add(btnRemoveSubCat);
+		
+		lblRemoveTaxCategory = new JLabel("REMOVE TAX CATEGORY  :");
+		lblRemoveTaxCategory.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblRemoveTaxCategory.setBounds(34, 175, 170, 15);
+		panel_1.add(lblRemoveTaxCategory);
+		
+		btnRemoveTaxCat = new JButton("LOAD\r\n");
+		btnRemoveTaxCat.setBounds(249, 170, 85, 26);
+		panel_1.add(btnRemoveTaxCat);
+		
+		lblEditTaxPercentage = new JLabel("EDIT TAX PERCENTAGE:");
+		lblEditTaxPercentage.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblEditTaxPercentage.setBounds(33, 242, 170, 15);
+		panel_1.add(lblEditTaxPercentage);
+		
+		btnEditTaxPercent = new JButton("LOAD\r\n");
+		btnEditTaxPercent.setBounds(248, 237, 85, 26);
+		panel_1.add(btnEditTaxPercent);
+		
+		JLabel lblEditProduct = new JLabel("EDIT A PRODUCT :");
+		lblEditProduct.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblEditProduct.setBounds(35, 305, 170, 15);
+		panel_1.add(lblEditProduct);
+		
+		JButton btnEditProduct = new JButton("LOAD\r\n");
+		btnEditProduct.setBounds(251, 301, 85, 26);
+		panel_1.add(btnEditProduct);
+		
+		JPanel panel_1_1 = new JPanel();
+		panel_1_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		panel_1_1.setBounds(451, 323, 373, 356);
+		contentPane.add(panel_1_1);
 		
 		
 		//Loading Add Product Form		
@@ -160,6 +227,23 @@ public class ManagerFrame extends JFrame {
 				
 				AddTaxCategoryFrame taxFrame = new AddTaxCategoryFrame();
 				taxFrame.setVisible(true);
+			}
+		});	
+		
+		//Button to Load RemoveACategoryFrame
+		
+		btnRemoveProdCat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				RemoveACategoryFrame rcFrame = null;
+				try {
+					rcFrame = new RemoveACategoryFrame();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				rcFrame.setVisible(true);
+				
 			}
 		});
 	}
