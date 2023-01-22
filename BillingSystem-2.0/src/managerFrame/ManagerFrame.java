@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 import category.Category;
+import category.CategoryRepository;
 
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -180,16 +181,16 @@ public class ManagerFrame extends JFrame {
 			}
 		});
 		
-		// Loading Add Category of Product		
+		// Button to Add Category 		
 		btnAddProdCat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Category category = new Category();
+				CategoryRepository categoryRep = new CategoryRepository();
 				try {
-					List<String> catNamesList = category.getCategoryNamesList();
+					List<String> catNamesList = categoryRep.getCategoryNamesList();
 					if(!catNamesList.contains(tFieldCategory.getText().toString()))
 					{
-						category.addCategory(tFieldCategory.getText().toString());
+						categoryRep.addCategory(tFieldCategory.getText().toString());
 						JOptionPane.showMessageDialog(null, "CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 						tFieldCategory.setText("");
 					}

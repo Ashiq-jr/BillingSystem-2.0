@@ -9,9 +9,12 @@ import javax.swing.border.LineBorder;
 
 import employee.Designation;
 import employee.Employee;
+import employee.EmployeeRepository;
 import loginInfo.LoginInfo;
+import loginInfo.LoginInfoRepository;
 import store.Address;
 import store.Store;
+import store.StoreRepository;
 
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -302,10 +305,10 @@ public class AdminFrame extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Employee emp = new Employee();
+				EmployeeRepository empRep = new EmployeeRepository();
 				int id = 0;
 				try {
-					 id = emp.generateNewEmployeeId();
+					 id = empRep.generateNewEmployeeId();
 				} catch (FileNotFoundException e2) {
 					e2.printStackTrace();
 				}
@@ -314,10 +317,10 @@ public class AdminFrame extends JFrame {
 				String emailId = tFieldMailId.getText();
 				Designation designation = (Designation) cBoxDesignation.getSelectedItem();
 				Employee employee = new Employee(id, name, mobileNum, emailId, designation);
-				LoginInfo info = new LoginInfo();
+				LoginInfoRepository infoRep = new LoginInfoRepository();
 				try {
-					employee.addEmployee(employee);
-					info.addNewLoginInfo(name);
+					empRep.addEmployee(employee);
+					infoRep.addNewLoginInfo(name);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -346,19 +349,19 @@ public class AdminFrame extends JFrame {
 		btnResetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Employee employee = new Employee();
+				EmployeeRepository empRep = new EmployeeRepository();
 				TreeMap<Integer, Employee> tMap = new TreeMap<Integer, Employee>();
 				try {
-					tMap = employee.loadEmployeeInfo();
+					tMap = empRep.loadEmployeeInfo();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
 				if(tMap.containsKey(Integer.parseInt(tFieldId.getText().toString())))
 				{
 					String pwd = tFieldPwd.getText().toString();
-					LoginInfo info = new LoginInfo();
+					LoginInfoRepository infoRep = new LoginInfoRepository();
 					try {
-						info.changePassword(Integer.parseInt(tFieldId.getText().toString()), pwd);
+						infoRep.changePassword(Integer.parseInt(tFieldId.getText().toString()), pwd);
 					} catch (NumberFormatException e1) {
 						e1.printStackTrace();
 					} catch (IOException e1) {
@@ -383,9 +386,10 @@ public class AdminFrame extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				
-				Store store = new Store();
+				StoreRepository storeRep = new StoreRepository();
+				Store store = null;
 				try {
-					store = store.getStoreDetails();
+					store = storeRep.getStoreDetails();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
@@ -419,11 +423,23 @@ public class AdminFrame extends JFrame {
 				long mobileNum = Long.parseLong(tFieldStoreMobile.getText());
 				String mailId = tFieldStoreMail.getText();
 				Store store = new Store(name, address, gst, mobileNum, mailId);
+				StoreRepository storeRep = new StoreRepository();
 				try {
-					store.updateStoreDetails(store);
+					storeRep.updateStoreDetails(store);
+					JOptionPane.showMessageDialog(null, "SUCCESS", "STORE DETAILS UPDATED", JOptionPane.INFORMATION_MESSAGE);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				
+				tFieldStoreName.setText("");
+				tFieldStoreDoor.setText("");
+				tFieldStoreArea.setText("");
+				tFieldStoreCity.setText("");
+				tFieldStoreState.setText("");
+				tFieldStorePin.setText("");
+				tFieldStoreGst.setText("");
+				tFieldStoreMobile.setText("");
+				tFieldStoreMail.setText("");
 				
 			}
 		});

@@ -7,10 +7,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import category.Category;
+import category.CategoryRepository;
 import product.Product;
+import product.ProductRepository;
 import product.Status;
 import product.TaxCategory;
+import product.TaxCategoryRepository;
 import subCategory.SubCategory;
+import subCategory.SubCategoryRepository;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -119,8 +123,8 @@ public class AddProductFrame extends JFrame {
 		
 		//Adding Values to Category ComboBox
 		
-		Category category = new Category();
-		categoryList = category.loadCategory();
+		CategoryRepository categoryRep = new CategoryRepository();
+		categoryList = categoryRep.loadCategory();
 		cBoxCategory.removeAllItems();
 		for(Category x : categoryList)
 		{
@@ -135,9 +139,9 @@ public class AddProductFrame extends JFrame {
 				if(cBoxCategory.getSelectedItem() != null)
 				{
 					String temp = cBoxCategory.getSelectedItem().toString();
-					SubCategory subCategory = new SubCategory();
+					SubCategoryRepository subRep = new SubCategoryRepository();
 					try {
-						subCategoryList = subCategory.loadSubCategory();
+						subCategoryList = subRep.loadSubCategory();
 					} catch (FileNotFoundException e1) {
 						e1.printStackTrace();
 					}
@@ -157,8 +161,8 @@ public class AddProductFrame extends JFrame {
 		
 		//Adding Values to TaxCategory ComboBox
 		
-		TaxCategory tax = new TaxCategory();
-		taxCategoryList = tax.loadTaxcategory();
+		TaxCategoryRepository taxRep = new TaxCategoryRepository();
+		taxCategoryList = taxRep.loadTaxcategory();
 		cBoxTaxCat.removeAllItems();
 		for(TaxCategory x : taxCategoryList)
 		{
@@ -170,10 +174,10 @@ public class AddProductFrame extends JFrame {
 		//Adding a new Product
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Product product = new Product();
+				ProductRepository productRep = new ProductRepository();
 				int id  = 0;
 				try {
-					 id = product.generateProductId();
+					 id = productRep.generateProductId();
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
@@ -184,23 +188,23 @@ public class AddProductFrame extends JFrame {
 				SubCategory subCategory = new SubCategory(category, subCat);
 				double price =Double.parseDouble(tFieldPrice.getText());
 				String tax = cBoxTaxCat.getSelectedItem().toString();
-				TaxCategory taxCategory = new TaxCategory();
+				TaxCategoryRepository taxRep = new TaxCategoryRepository();
 				double taxValue = 0;
 				try {
-					 taxValue = taxCategory.getTaxValue(tax);
+					 taxValue = taxRep.getTaxValue(tax);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				taxCategory = new TaxCategory(tax, taxValue);
+				TaxCategory taxCategory = new TaxCategory(tax, taxValue);
 				
-				product = new Product(id, name, category, subCategory, price, taxCategory, Status.valueOf("ACTIVE") );
+				Product product = new Product(id, name, category, subCategory, price, taxCategory, Status.valueOf("ACTIVE") );
 				
 				try {
 					
-					List<String> nameList = product.getNameListOfProducts();
+					List<String> nameList = productRep.getNameListOfProducts();
 					if(!nameList.contains(name))
 					{
-						product.addNewProduct(product);
+						productRep.addNewProduct(product);
 						JOptionPane.showMessageDialog(null, "PRODUCT ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 					}
 					else

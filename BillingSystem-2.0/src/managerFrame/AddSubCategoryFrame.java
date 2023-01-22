@@ -1,13 +1,14 @@
 package managerFrame;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import category.Category;
+import category.CategoryRepository;
 import subCategory.SubCategory;
+import subCategory.SubCategoryRepository;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,7 +54,7 @@ public class AddSubCategoryFrame extends JFrame {
 		lblCategory.setBounds(66, 76, 171, 31);
 		contentPane.add(lblCategory);
 		
-		cBoxCategory = new JComboBox();
+		cBoxCategory = new JComboBox<String>();
 		cBoxCategory.setBounds(217, 80, 150, 25);
 		contentPane.add(cBoxCategory);
 		
@@ -74,8 +75,8 @@ public class AddSubCategoryFrame extends JFrame {
 		
 		//Addding Categories to the Category ComboBox
 		
-		Category category = new Category();
-		List<Category> list = category.loadCategory();
+		CategoryRepository categoryRep = new CategoryRepository();
+		List<Category> list = categoryRep.loadCategory();
 		cBoxCategory.removeAllItems();
 		for(Category x : list)
 		{
@@ -92,11 +93,12 @@ public class AddSubCategoryFrame extends JFrame {
 				Category category = new Category(catName);
 				String subName = tFieldSubCategory.getText().toUpperCase();
 				SubCategory subCategory = new SubCategory(category,subName);
+				SubCategoryRepository subRep = new SubCategoryRepository();
 				try {
-					List<String> nameList = subCategory.getNameList();
+					List<String> nameList = subRep.getNameList();
 					if(!nameList.contains(subName))
 					{
-						subCategory.addSubCategory(subCategory);
+						subRep.addSubCategory(subCategory);
 						JOptionPane.showMessageDialog(null, "SUB CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 						tFieldSubCategory.setText("");
 						cBoxCategory.setSelectedItem(null);

@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import adminFrame.AdminFrame;
 import loginInfo.LoginInfo;
+import loginInfo.LoginInfoRepository;
 import managerFrame.ManagerFrame;
 import operatorFrame.OperatorFrame;
 
@@ -92,10 +93,10 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 
-				LoginInfo li = new LoginInfo();
+				LoginInfoRepository logInfo = new LoginInfoRepository();
 				List<LoginInfo> logList = new ArrayList<LoginInfo>();
 				try {
-					logList = li.getLoginInfoList();
+					logList = logInfo.getLoginInfoList();
 				} catch (FileNotFoundException e1) {
 					System.out.println("empty list");
 				}

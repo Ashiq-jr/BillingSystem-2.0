@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import category.Category;
+import category.CategoryRepository;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -59,8 +60,8 @@ public class RemoveACategoryFrame extends JFrame {
 		
 		//Loading Categories in Combo Box
 		
-		Category category = new Category();
-		List<Category> list = category.loadCategory();
+		CategoryRepository categoryRep = new CategoryRepository();
+		List<Category> list = categoryRep.loadCategory();
 		
 		cBoxCategory.removeAllItems();
 		for(Category x : list)
@@ -76,7 +77,7 @@ public class RemoveACategoryFrame extends JFrame {
 				
 				String remove = cBoxCategory.getSelectedItem().toString();
 				try {
-					category.removeCategory(remove);
+					categoryRep.removeCategory(remove);
 					JOptionPane.showMessageDialog(null, "CATEGORY REMOVED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 					cBoxCategory.setSelectedItem(null);
 				} catch (IOException e1) {

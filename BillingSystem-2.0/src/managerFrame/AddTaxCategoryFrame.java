@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import product.TaxCategory;
+import product.TaxCategoryRepository;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -77,12 +78,13 @@ public class AddTaxCategoryFrame extends JFrame {
 				double taxPercent = Double.parseDouble(tFieldTaxPercent.getText());
 				
 				TaxCategory tax = new TaxCategory(taxName, taxPercent);
+				TaxCategoryRepository taxRep = new TaxCategoryRepository();
 				try {
 					
-					List<String> nameList = tax.getTaxCategoryNamesList();
+					List<String> nameList = taxRep.getTaxCategoryNamesList();
 					if(!nameList.contains(taxName))
 					{
-						tax.addTaxCategory(tax);
+						taxRep.addTaxCategory(tax);
 						JOptionPane.showMessageDialog(null, "TAX CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 						tFieldTaxName.setText("");
 						tFieldTaxPercent.setText("");
