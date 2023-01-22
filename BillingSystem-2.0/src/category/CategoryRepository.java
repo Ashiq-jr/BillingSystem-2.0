@@ -7,7 +7,7 @@ import java.util.List;
 
 import fileRepository.FileRepository;
 
-public class CategoryRepository extends Category {
+public class CategoryRepository {
 	
 	
 	static List<Category> list = new ArrayList<Category>();

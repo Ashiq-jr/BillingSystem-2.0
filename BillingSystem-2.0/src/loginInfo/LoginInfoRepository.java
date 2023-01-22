@@ -10,7 +10,7 @@ import employee.Employee;
 import employee.EmployeeRepository;
 import fileRepository.FileRepository;
 
-public class LoginInfoRepository extends LoginInfo {
+public class LoginInfoRepository {
 
 	
 	static List<String[]> list = new ArrayList<String[]>();
@@ -47,10 +47,10 @@ public class LoginInfoRepository extends LoginInfo {
 			
 			for(String[] x : list)
 			{
-				this.name = x[0];
-				this.password = x[1];
-				this.designation = Designation.valueOf(x[2]);
-				LoginInfo li = new LoginInfo(this.name, this.password, this.designation);
+				String name = x[0];
+				String password = x[1];
+				Designation designation = Designation.valueOf(x[2]);
+				LoginInfo li = new LoginInfo(name, password, designation);
 				logInfoList.add(li);
 			}
 			return logInfoList;		

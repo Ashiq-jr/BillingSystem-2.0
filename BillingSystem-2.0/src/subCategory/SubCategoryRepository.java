@@ -8,7 +8,7 @@ import java.util.List;
 import category.Category;
 import fileRepository.FileRepository;
 
-public class SubCategoryRepository extends SubCategory {
+public class SubCategoryRepository {
 	
 	
 	static List<SubCategory> list = new ArrayList<SubCategory>();
@@ -34,7 +34,7 @@ public class SubCategoryRepository extends SubCategory {
 			return list;
 		}
 		
-		//Method to Add SubVategory
+		//Method to Add SubCategory
 		
 		public void addSubCategory(SubCategory subcategory) throws IOException
 		{
@@ -55,5 +55,10 @@ public class SubCategoryRepository extends SubCategory {
 			}
 			return nameList;
 		}
+		
+		//Method to Remove SubCategory
+		
+		
+		
 
 }

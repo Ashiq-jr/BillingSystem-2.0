@@ -11,7 +11,7 @@ import category.Category;
 import fileRepository.FileRepository;
 import subCategory.SubCategory;
 
-public class ProductRepository extends Product{
+public class ProductRepository {
 	
 	static TreeMap<Integer, Product> tMap = new TreeMap<Integer, Product>();
 	static List<Product> prodList = new ArrayList<Product>();

@@ -389,7 +389,7 @@ public class AdminFrame extends JFrame {
 				StoreRepository storeRep = new StoreRepository();
 				Store store = null;
 				try {
-					store = storeRep.getStoreDetails();
+					store = storeRep.loadStoreDetails();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}

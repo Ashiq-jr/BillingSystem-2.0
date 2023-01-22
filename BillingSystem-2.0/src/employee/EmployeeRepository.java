@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 import fileRepository.FileRepository;
 
-public class EmployeeRepository extends Employee {
+public class EmployeeRepository {
 	
 	
 	static TreeMap<Integer,Employee> tMap = new TreeMap<Integer,Employee>();

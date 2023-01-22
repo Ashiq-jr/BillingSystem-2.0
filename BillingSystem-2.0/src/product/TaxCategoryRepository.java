@@ -6,7 +6,7 @@ import java.util.List;
 
 import fileRepository.FileRepository;
 
-public class TaxCategoryRepository extends TaxCategory {
+public class TaxCategoryRepository {
 
 	
 	static List<TaxCategory> list = new ArrayList<TaxCategory>();

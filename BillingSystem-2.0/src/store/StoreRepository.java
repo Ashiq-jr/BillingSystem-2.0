@@ -8,33 +8,28 @@ import fileRepository.FileRepository;
 
 public class StoreRepository extends Store {
 	
-		// method to get Store Details as Object
-		public Store getStoreDetails() throws FileNotFoundException
-		{
-			this.loadStoreDetails();
-			Store store = new Store(this.name, this.address, this.gstNumber, this.mobileNum, this.mailId);
-			return store;
-		}
 		
-		//Method to load Store Data from File
-		public void loadStoreDetails() throws FileNotFoundException
+		//Method to load Store Data from File as Store Object
+		public Store loadStoreDetails() throws FileNotFoundException
 		{
 			FileRepository fp = new FileRepository();
 			List<String[]> list = fp.getStoreDetailsAsList();
+			Store store = null;
 			for(String[] x : list)
 			{
-				this.name = x[0];
+				String name = x[0];
 				String doorNo = x[1];
 				String area = x[2];
 				String city = x[3];
 				String state = x[4];
 				int pinCode = Integer.parseInt(x[5]);
 				Address address = new Address(doorNo, area, city, state, pinCode);
-				this.address = address;
-				this.gstNumber = x[6];
-				this.mobileNum = Long.parseLong(x[7]);
-				this.mailId = x[8];
+				String gstNumber = x[6];
+				long mobileNum = Long.parseLong(x[7]);
+				String mailId = x[8];
+				store = new Store(name,address, gstNumber, mobileNum, mailId);
 			}
+			return store;
 		}
 		
 		//Method to Update Store Details
