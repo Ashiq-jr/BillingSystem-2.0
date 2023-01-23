@@ -110,6 +110,18 @@ public class FileRepository {
 	{
 		overWriteDataInFile(categoryInfoPath, info);
 	}
+	public void updateSubCategoryInfoOnFile(String info)throws IOException
+	{
+		overWriteDataInFile(subCategoryInfoPath, info);
+	}
+	public void updateTaxCategoryInfoOnFile(String info)throws IOException
+	{
+		overWriteDataInFile(taxCategoryInfoPath, info);
+	}
+	public void updateProductInfoOnFile(String info)throws IOException
+	{
+		overWriteDataInFile(productInfoPath, info);
+	}
 	
 	
 	

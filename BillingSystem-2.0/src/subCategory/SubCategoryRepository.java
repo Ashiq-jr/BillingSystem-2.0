@@ -3,6 +3,7 @@ package subCategory;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import category.Category;
@@ -57,6 +58,32 @@ public class SubCategoryRepository {
 		}
 		
 		//Method to Remove SubCategory
+		
+		public void removeSubCategory(String name) throws IOException
+		{
+			list.clear();
+			list = this.loadSubCategory();
+			
+			Iterator<SubCategory> itr = list.iterator();
+			String info = "";
+			while(itr.hasNext())
+			{
+				SubCategory subCat = (SubCategory)itr.next();
+				if(subCat.getName().equals(name))
+				{
+					itr.remove();
+				}
+				else
+				{
+					info += subCat.getCategory().getName() + "|" + subCat.getName() + "\n";
+				}
+			}
+			
+			FileRepository fp = new FileRepository();
+			fp.updateSubCategoryInfoOnFile(info.trim());
+			
+		}
+
 		
 		
 		

@@ -2,6 +2,7 @@ package product;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import fileRepository.FileRepository;
@@ -86,5 +87,44 @@ public class TaxCategoryRepository {
 				nameList.add(x.getName());
 			}
 			return nameList;
+		}
+		
+		//Method to remove a Tax Category
+		
+		public void removeTaxCategory(String name) throws IOException
+		{
+			list.clear();
+			list = this.loadTaxcategory();
+			Iterator<TaxCategory> itr = list.iterator();
+			String info = "";
+			while(itr.hasNext())
+			{
+				TaxCategory tax = (TaxCategory) itr.next();
+				if(!tax.getName().equals(name))
+				{
+					info += tax.getName() + "|" + tax.getValue() + "\n";
+				}
+			}
+			
+			FileRepository fp = new FileRepository();
+			fp.updateTaxCategoryInfoOnFile(info.trim());
+		}
+		
+		//Method to Edit a Tax Category
+		
+		public void editTaxCategory(TaxCategory taxCategory, int index) throws IOException
+		{
+			list.clear();
+			list = this.loadTaxcategory();
+			list.set(index, taxCategory);
+			Iterator<TaxCategory> itr = list.iterator();
+			String info = "";
+			while(itr.hasNext())
+			{
+				TaxCategory tax = (TaxCategory) itr.next();
+				info += tax.getName() + "|" + tax.getValue() + "\n";
+			}
+			FileRepository fp = new FileRepository();
+			fp.updateTaxCategoryInfoOnFile(info.trim());
 		}
 }

@@ -88,6 +88,23 @@ public class ProductRepository {
 			return temp + 1;
 		}
 		
+		//Method to Get Product Id using name
+		public int getIdUsingName(String name) throws IOException
+		{
+			int id = 0;
+			tMap = this.loadProductsIntoTreeMap();
+			for(Integer x: tMap.keySet())
+			{
+				Product product = tMap.get(x);
+				if(product.getName().equals(name))
+				{
+					id = product.getId();
+				}
+			}
+			return id;
+			
+		}
+		
 		//Method to Add New Product
 		public void addNewProduct(Product product) throws IOException
 		{
@@ -97,5 +114,28 @@ public class ProductRepository {
 			fp.addNewProductInfoOnFile(info);
 			
 		}
+		
+		//Method to Update Product info
+		
+		public void editProduct(Product product) throws IOException
+		{
+			int index = product.getId() - 101;
+			prodList.clear();
+			prodList = this.getListOfProducts();
+			prodList.set(index, product);
+			String info = "";
+			
+			StringBuffer buffer = new StringBuffer();
+			for(Product x : prodList)
+			{
+				buffer.append(x.getId() + "|" + x.getName() + "|" + x.getCategory().getName() + "|" + x.getSubCategory().getName() + "|" + String.valueOf(x.getUnitPrice()) + "|" + x.getTaxCategory().getName() + "|" + x.getStatus().name() + "\n");
+			}
+			
+			info = buffer.toString();
+			
+			FileRepository fp = new FileRepository();
+			fp.updateProductInfoOnFile(info.trim());
+		}
+		
 
 }

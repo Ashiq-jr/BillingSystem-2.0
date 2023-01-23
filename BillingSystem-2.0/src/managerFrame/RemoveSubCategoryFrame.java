@@ -12,6 +12,7 @@ import subCategory.SubCategory;
 import subCategory.SubCategoryRepository;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.io.FileNotFoundException;
@@ -37,26 +38,7 @@ public class RemoveSubCategoryFrame extends JFrame {
 	static List<Category> catList = new ArrayList<Category>();
 	static List<SubCategory> subList = new ArrayList<SubCategory>();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RemoveSubCategoryFrame frame = new RemoveSubCategoryFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 * @throws IOException 
-	 */
+	
 	public RemoveSubCategoryFrame() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 452, 365);
@@ -138,8 +120,23 @@ public class RemoveSubCategoryFrame extends JFrame {
 			
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
-					
+					if(cBoxSubCategory.getSelectedItem() != null && cBoxCategory.getSelectedItem() != null)
+					{
+						String name = cBoxSubCategory.getSelectedItem().toString();
+						SubCategoryRepository subRep = new SubCategoryRepository();
+						try {
+							subRep.removeSubCategory(name);
+							JOptionPane.showMessageDialog(null, "SUB CATEGORY REMOVED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						cBoxCategory.setSelectedItem(null);
+						cBoxSubCategory.setSelectedItem(null);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "EMPTY BOXES", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			});
 	}

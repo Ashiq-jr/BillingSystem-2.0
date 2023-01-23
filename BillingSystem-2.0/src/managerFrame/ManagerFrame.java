@@ -247,5 +247,73 @@ public class ManagerFrame extends JFrame {
 				
 			}
 		});
+		
+		//Button to Load RemoveASubCategory Frame
+		
+		btnRemoveSubCat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				RemoveSubCategoryFrame remSubFrame = null;
+				try {
+					remSubFrame = new RemoveSubCategoryFrame();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				remSubFrame.setVisible(true);
+			}
+		});
+		
+		// Button to Load RemoveTaxCategory Frame
+		
+		btnRemoveTaxCat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				RemoveTaxCategoryFrame remTaxFrame = null;
+				try {
+					remTaxFrame = new RemoveTaxCategoryFrame();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				remTaxFrame.setVisible(true);
+			}
+		});
+		
+		// Button to Edit Percentage of Tax Category
+		
+		btnEditTaxPercent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				EditTaxPercentFrame editTaxFrame = null;
+				try {
+					editTaxFrame = new EditTaxPercentFrame();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				editTaxFrame.setVisible(true);
+				
+			}
+		});
+		
+		//Button to Load Edit a Product
+		
+		btnEditProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				EditProductFrame editProductFrame = null;
+				try {
+					editProductFrame = new EditProductFrame();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				editProductFrame.setVisible(true);
+			}
+		});
+		
+		
 	}
 }
