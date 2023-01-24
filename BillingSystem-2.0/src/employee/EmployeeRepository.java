@@ -32,6 +32,25 @@ public class EmployeeRepository {
 		return tMap;
 	}
 	
+	//Methhod to Find An Employee Using his Id And Return Object
+	
+	public Employee findEmployeeById(int id) throws FileNotFoundException
+	{
+		tMap.clear();
+		tMap = this.loadEmployeeInfo();
+		Employee employee = new Employee();
+		for(Integer x : tMap.keySet())
+		{
+			if(x == id)
+			{
+				employee = tMap.get(x);
+			}
+		}
+		
+		return employee;
+	}
+	
+	
 	//Method to Find an Employee Using his Name and Return Object
 	
 	public Employee findEmployeeByName(String name) throws FileNotFoundException

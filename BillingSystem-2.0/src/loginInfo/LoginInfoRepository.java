@@ -15,6 +15,7 @@ public class LoginInfoRepository {
 	
 	static List<String[]> list = new ArrayList<String[]>();
 	static List<LoginInfo> logInfoList = new ArrayList<LoginInfo>();
+	static LoginInfo currentUser;
 	
 	
 	//Method to Return Object of a Particular Info using Id.
@@ -91,5 +92,19 @@ public class LoginInfoRepository {
 			FileRepository fp = new FileRepository();
 			fp.updateLoginInfoOnFile(overallInfo);
 			
+		}
+		
+		//Method to Set Current User
+		
+		public void setCurrentUser(LoginInfo info)
+		{
+			currentUser = info;
+		}
+		
+		//Method to Get Current User
+		
+		public LoginInfo getCurrentUser()
+		{
+			return currentUser;
 		}
 }

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import adminFrame.AdminFrame;
+import employee.Designation;
 import loginInfo.LoginInfo;
 import loginInfo.LoginInfoRepository;
 import managerFrame.ManagerFrame;
@@ -106,9 +107,22 @@ public class MainFrame extends JFrame {
 					i++;
 					if(textField_Name.getText().toString().equals(x.getName()) && textField_Password.getText().toString().equals(x.getPassword()))
 					{
+						String name = textField_Name.getText();
+						String pwd = textField_Password.getText();
+						Designation designation = Designation.valueOf(x.getDesignation().name());
+						LoginInfo currentUser = new LoginInfo(name, pwd, designation);
+						LoginInfoRepository logRep = new LoginInfoRepository();
+						logRep.setCurrentUser(currentUser);
+						
+						
 						if(x.getDesignation().toString().equals("OPERATOR"))
-						{
-							OperatorFrame opFrame = new OperatorFrame();
+						{	
+							OperatorFrame opFrame = null;
+							try {
+								opFrame = new OperatorFrame();
+							} catch (FileNotFoundException e1) {
+								e1.printStackTrace();
+							}
 							opFrame.setTitle("Welcome " + textField_Name.getText());
 							opFrame.setVisible(true);
 							textField_Name.setText("");
