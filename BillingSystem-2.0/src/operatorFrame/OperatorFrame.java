@@ -74,6 +74,7 @@ public class OperatorFrame extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu viewMenu;
+	private JMenuItem addCustomer;
 	private JMenuItem myPerformance;
 	private JMenuItem bill;
 	private JMenuItem customerDetails;
@@ -83,9 +84,9 @@ public class OperatorFrame extends JFrame {
 	private JLabel lblQuantity;
 	private JComboBox<Integer> cBoxQuantity;
 	private JButton btnAddProd ;
-	private JLabel lblEmailId;
-	private JTextField tFieldEmail;
-	private JButton btnAddCust;
+	private JLabel lblPhNumber;
+	private JTextField tFieldPhNumber;
+	private JButton btnSubmit;
 	private JButton btnBill;
 	private JButton btnPreviousBill;
 	private JButton btnNextBill;
@@ -94,6 +95,8 @@ public class OperatorFrame extends JFrame {
 	private JButton btnDelete;
 	private JLabel lblTotal;
 	private JLabel lblShowTotal;
+	private JButton btnClear;
+	private JButton btnUpdateBill;
 	private static int billNumber = 0;
 	private static int i = 1;
 	private static int custId;
@@ -192,7 +195,7 @@ public class OperatorFrame extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		scrollPane.setFont(new Font("Tahoma", Font.BOLD, 12));
-		scrollPane.setBounds(551, 79, 538, 359);
+		scrollPane.setBounds(551, 78, 538, 332);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -224,27 +227,27 @@ public class OperatorFrame extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		lblEmailId = new JLabel("CUSTOMER ID: ");
-		lblEmailId.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmailId.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
-		lblEmailId.setBounds(30, 38, 156, 25);
-		panel_1.add(lblEmailId);
+		lblPhNumber = new JLabel("PHONE NUMBER : ");
+		lblPhNumber.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPhNumber.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		lblPhNumber.setBounds(30, 38, 156, 25);
+		panel_1.add(lblPhNumber);
 		
-		tFieldEmail = new JTextField();
-		tFieldEmail.setColumns(10);
-		tFieldEmail.setBounds(210, 39, 166, 25);
-		panel_1.add(tFieldEmail);
+		tFieldPhNumber = new JTextField();
+		tFieldPhNumber.setColumns(10);
+		tFieldPhNumber.setBounds(210, 39, 166, 25);
+		panel_1.add(tFieldPhNumber);
 		
-		btnAddCust = new JButton("CHECK");
-		btnAddCust.setBounds(174, 93, 85, 31);
-		panel_1.add(btnAddCust);
+		btnSubmit = new JButton("SUBMIT");
+		btnSubmit.setBounds(174, 93, 85, 31);
+		panel_1.add(btnSubmit);
 		
-		btnBill = new JButton("DONE");
+		btnBill = new JButton("PAYMENT");
 		btnBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnBill.setBounds(767, 514, 85, 32);
+		btnBill.setBounds(735, 602, 148, 32);
 		contentPane.add(btnBill);
 		
 		btnPreviousBill = new JButton("PREVIOUS BILL");
@@ -260,10 +263,11 @@ public class OperatorFrame extends JFrame {
 		fileMenu = new JMenu("File");
 		viewMenu = new JMenu("View");
 		
+		addCustomer = new JMenuItem("Add Customer");
 		myPerformance = new JMenuItem("My Performance");
 		bill = new JMenuItem("Bill");
 		customerDetails = new JMenuItem("Customer Details");
-		
+		fileMenu.add(addCustomer);
 		viewMenu.add(myPerformance);
 		viewMenu.add(bill);
 		viewMenu.add(customerDetails);
@@ -360,17 +364,17 @@ public class OperatorFrame extends JFrame {
 		cBoxQuantity.addItem(10);
 		cBoxQuantity.setSelectedItem(null);
 		
-		btnEdit = new JButton("EDIT");
-		btnEdit.setBounds(540, 515, 85, 32);
+		btnEdit = new JButton("EDIT QUANTITY");
+		btnEdit.setBounds(540, 479, 140, 32);
 		contentPane.add(btnEdit);
 		
-		btnDelete = new JButton("DELETE");
-		btnDelete.setBounds(993, 515, 85, 32);
+		btnDelete = new JButton("DELETE ITEM");
+		btnDelete.setBounds(930, 479, 148, 32);
 		contentPane.add(btnDelete);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.setBounds(940, 455, 136, 32);
+		panel_2.setBounds(940, 427, 136, 32);
 		contentPane.add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -382,46 +386,61 @@ public class OperatorFrame extends JFrame {
 		
 		lblTotal = new JLabel("TOTAL :");
 		lblTotal.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
-		lblTotal.setBounds(863, 455, 111, 32);
+		lblTotal.setBounds(863, 427, 111, 32);
 		contentPane.add(lblTotal);
 		
 		JButton btnSaveBill = new JButton("ADD BILL");
-		btnSaveBill.setBounds(735, 602, 148, 32);
+		btnSaveBill.setBounds(618, 537, 148, 32);
 		contentPane.add(btnSaveBill);
+		
+		btnClear = new JButton("CLEAR");
+		btnClear.setBounds(735, 479, 148, 32);
+		contentPane.add(btnClear);
+		
+		btnUpdateBill = new JButton("UPDATE BILL");
+		btnUpdateBill.setBounds(852, 537, 148, 32);
+		contentPane.add(btnUpdateBill);
 		
 		// Button to Add Product
 		
 		btnAddProd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				model.setRowCount(0);
-				String name = tFieldProduct.getText();
-				ProductRepository prodRep = new ProductRepository();
-				Product product = null;
-				try {
-					product = prodRep.getProductUsingName(name);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				
+				if(tFieldProduct.getText().isEmpty() || cBoxQuantity.getSelectedIndex() == -1)
+				{
+					JOptionPane.showMessageDialog(null, "EMPTY FIELDS", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
-				
-				int s_No = model.getRowCount() + 1;
-				int quantity =Integer.parseInt(cBoxQuantity.getSelectedItem().toString());
-				double netPrice = product.getUnitPrice() * quantity;
-				
-				ProductInCart prodInCart = new ProductInCart(s_No, product, quantity, netPrice);
-				
-				row[0] = prodInCart.getS_No();
-				row[1] = prodInCart.getProduct().getName();
-				row[2] = prodInCart.getProduct().getUnitPrice();
-				row[3] = prodInCart.getQuantity();
-				row[4] = prodInCart.getNetPrice();
-				
-				model.addRow(row);
-				
-				cBoxQuantity.setSelectedItem(null);
-				tFieldProduct.setText(null);
-				String total = String.valueOf(getTotal(table));
-				lblShowTotal.setText(total);
+				else
+				{  
+					String name = tFieldProduct.getText();
+					ProductRepository prodRep = new ProductRepository();
+					Product product = null;
+					try {
+						product = prodRep.getProductUsingName(name);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					int s_No = model.getRowCount() + 1;
+					int quantity =Integer.parseInt(cBoxQuantity.getSelectedItem().toString());
+					double netPrice = product.getUnitPrice() * quantity;
+					
+					ProductInCart prodInCart = new ProductInCart(s_No, product, quantity, netPrice);
+					
+					row[0] = prodInCart.getS_No();
+					row[1] = prodInCart.getProduct().getName();
+					row[2] = prodInCart.getProduct().getUnitPrice();
+					row[3] = prodInCart.getQuantity();
+					row[4] = prodInCart.getNetPrice();
+					
+					model.addRow(row);
+					
+					cBoxQuantity.setSelectedItem(null);
+					tFieldProduct.setText(null);
+					String total = String.valueOf(getTotal(table));
+					lblShowTotal.setText(total);
+				}
 				
 				
 			}
@@ -474,7 +493,7 @@ public class OperatorFrame extends JFrame {
 						int quantity = Integer.parseInt(updatedQuantity);
 						double price = (double)model.getValueAt(index, 2);
 						double updatedNetPrice = price * quantity;						
-						model.setValueAt(updatedQuantity, index, 3);
+						model.setValueAt(quantity, index, 3);
 						model.setValueAt(updatedNetPrice, index, 4);
 						double total = getTotal(table);
 						lblShowTotal.setText(String.valueOf(total));
@@ -488,20 +507,57 @@ public class OperatorFrame extends JFrame {
 		
 		// Button to Add Customer
 		
-		btnAddCust.addActionListener(new ActionListener() {
+		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 	
 			}
 		});
 		
-		// Button to Save Bill to Queue
+		// Button to Add Bill to Queue
 		
 		btnSaveBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				billNumber = i;
-				BillQueue bq = new BillQueue();
+				if(table.getRowCount() >= 1)
+				{
+					billNumber = i;
+					BillQueue bq = new BillQueue();
+					int tempBNo = billNumber;
+					String bDate = date.format(dateFormatter);
+					String id = String.valueOf(custId);
+					List<ProductInCart> list = null;
+					try {
+						list = getTableToList(table);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					double total = getTotal(table);
+					Bill bill = new Bill(tempBNo,bDate,id,list, total);
+					if(!bq.billNumberExists(tempBNo))
+					{
+						bq.addBill(bill);
+					}
+			
+					model.setRowCount(0);
+					clearTable(table);
+					lblShowTotal.setText("");
+					i++;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "EMPRTY BILL", "ERROR", JOptionPane.OK_OPTION);
+				}
+		
+			}
+		});
+		
+		//Button to Update Existing Bill
+		
+		btnUpdateBill.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				BillQueue queue = new BillQueue();
 				int tempBNo = billNumber;
 				String bDate = date.format(dateFormatter);
 				String id = String.valueOf(custId);
@@ -512,16 +568,9 @@ public class OperatorFrame extends JFrame {
 					e1.printStackTrace();
 				}
 				double total = getTotal(table);
-				Bill bill = new Bill(tempBNo,bDate,id,list, total);
-				if(!bq.billNumberExists(tempBNo))
-				{
-					bq.addBill(bill);
-				}
-			
-				clearTable(table);
-				lblShowTotal.setText("");
-				//lblNewLabel.setText(String.valueOf(billNumber)); 
-				i++;
+				Bill currentBill = new Bill(tempBNo,bDate,id,list, total);
+				queue.updateBill(currentBill, billNumber);
+				
 			}
 		});
 		
@@ -530,13 +579,13 @@ public class OperatorFrame extends JFrame {
 		btnNextBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				model.setRowCount(0);
 				BillQueue bq = new BillQueue();
 				Bill nextBill = bq.getNextBill(billNumber);			
-				setTableUsingList(table, nextBill);
+				setTableUsingList(table, row, nextBill);
 				double total = getTotal(table);
 				lblShowTotal.setText(String.valueOf(total));
 				billNumber = nextBill.getNumber();
-				
 			
 			}
 		});
@@ -548,14 +597,49 @@ public class OperatorFrame extends JFrame {
 		btnPreviousBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				model.setRowCount(0);
 				BillQueue bq = new BillQueue();
-				Bill previousBill = bq.getPreviousBill(billNumber);		
-				setTableUsingList(table, previousBill);
-				double total = getTotal(table);
-				lblShowTotal.setText(String.valueOf(total));
-				billNumber = previousBill.getNumber();
+				int noOfBills = bq.getBillsInListCount();
+				if(noOfBills >= 1)
+				{
+					Bill previousBill = bq.getPreviousBill(billNumber);		
+					setTableUsingList(table, row, previousBill);
+					double total = getTotal(table);
+					lblShowTotal.setText(String.valueOf(total));
+					billNumber = previousBill.getNumber();
+				}
 			}
 		});
+		
+		// Button to Clear Table Contents
+		
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				model.setRowCount(0);
+			}
+		});
+		
+		// Menu Add Customer
+		
+		addCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				AddCustomerFrame acFrame = new AddCustomerFrame();
+				acFrame.setVisible(true);
+			}
+		});
+		
+		// Menu View Details of Customer
+		
+		customerDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ViewCustomerFrame vcFrame = new ViewCustomerFrame();
+				vcFrame.setVisible(true);
+			}
+		});
+		
 
 		
 	
@@ -607,25 +691,26 @@ public class OperatorFrame extends JFrame {
 		return list;
 	}
 	
-	public static void setTableUsingList(JTable table,Bill bill )
+	public static void setTableUsingList(JTable table,Object[] row, Bill bill )
 	{
 		List<ProductInCart> list = bill.getProductsinCart();
 		int i = 0;
+		
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for(ProductInCart x : list)
 		{
-			int sNo = x.getS_No();
-			String name = x.getProduct().getName();
-			double price = x.getProduct().getUnitPrice();
-			int quantity = x.getQuantity();
-			double netPrice = x.getNetPrice();
-			
-			while( i < table.getRowCount())
+						
+			while(i < list.size())
 			{
-				table.getModel().setValueAt(sNo, i, 0);
-				table.getModel().setValueAt(name, i, 1);
-				table.getModel().setValueAt(price, i, 2);
-				table.getModel().setValueAt(quantity, i, 3);
-				table.getModel().setValueAt(netPrice, i, 4);
+				
+				row[0] = x.getS_No();
+				row[1] = x.getProduct().getName();
+				row[2] = x.getProduct().getUnitPrice();
+				row[3] = x.getQuantity();
+				row[4] = x.getNetPrice();
+				
+				model.addRow(row);
+
 				i++;
 				break;
 			}
@@ -636,9 +721,10 @@ public class OperatorFrame extends JFrame {
 	public static void clearTable(JTable table)
 	{
 		int i = 0;
-		int j = 0;
+		
 		while( i < table.getRowCount())
 		{
+			int j = 0;
 			while(j < table.getColumnCount())
 			{
 				table.getModel().setValueAt("", i, j);
@@ -647,7 +733,7 @@ public class OperatorFrame extends JFrame {
 			
 			i++;
 		}
-		
+	
 	}
 }
 

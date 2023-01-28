@@ -126,6 +126,10 @@ public class App {
 ////		custRep.addCustToTempList(customer1);
 //		System.out.println(custRep.getTempId());
 		
+		CustomerRepository cp = new CustomerRepository();
+		int id  = cp.generateCustomerId();
+		System.out.println(id);
+		
 
 }
 }

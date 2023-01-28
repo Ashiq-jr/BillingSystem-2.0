@@ -52,7 +52,7 @@ public class BillQueue {
 	 
 	 public void addBill(Bill bill)
 	 {
-		 queue.add(bill);
+		 queue.add(bill);	 
 	 }
 	 
 	 public void removeBill(int billNumber)
@@ -67,8 +67,9 @@ public class BillQueue {
 		 }
 	 }
 	 
-	 public void updateBill(Bill bill, int index)
+	 public void updateBill(Bill bill, int billNumber)
 	 {
+		 int index = this.getIndexOfABill(billNumber);
 		 queue.set(index, bill);
 	 }
 	 

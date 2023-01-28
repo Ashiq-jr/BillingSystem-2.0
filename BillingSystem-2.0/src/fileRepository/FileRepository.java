@@ -60,6 +60,12 @@ public class FileRepository {
 		return list = loadFileData(taxCategoryInfoPath);
 	}
 	
+	public List<String[]> getCustomerDetailsAsList() throws FileNotFoundException
+	{
+		list.clear();
+		return list = loadFileData(customerInfoPath);
+	}
+	
 	// Return the Path of ProductInfo File
 	
 	public String getProductInfoPath()
