@@ -1,4 +1,4 @@
-package product;
+ package product;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +69,23 @@ public class ProductRepository {
 			return nameList;
 		}
 		
+		//Method to get A Product Using Name
+		
+		public Product getProductUsingName(String name) throws IOException
+		{
+			prodList.clear();
+			prodList = this.getListOfProducts();
+			Product product = null;
+			for(Product x : prodList)
+			{
+				if(x.getName().equals(name))
+				{
+					product = x;
+				}
+			}
+			
+			return product;
+		}
 		
 		
 		//Method to Generate Product Id	

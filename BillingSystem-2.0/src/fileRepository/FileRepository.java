@@ -20,7 +20,7 @@ public class FileRepository {
 	final String categoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\category.txt";
 	final String subCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\subcategory.txt";
 	final String taxCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\taxCategory.txt";
-
+	final String customerInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\customer.txt";
 	
 	
 	//Reading file
@@ -121,6 +121,10 @@ public class FileRepository {
 	public void updateProductInfoOnFile(String info)throws IOException
 	{
 		overWriteDataInFile(productInfoPath, info);
+	}
+	public void addNewCustomerInfoOnFile(String info) throws IOException
+	{
+		writeNewInfoOnFile(customerInfoPath, info);
 	}
 	
 	
