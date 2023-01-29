@@ -21,7 +21,8 @@ public class FileRepository {
 	final String subCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\subcategory.txt";
 	final String taxCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\taxCategory.txt";
 	final String customerInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\customer.txt";
-	
+	final String storedBillInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\storedBillInfo.txt";
+
 	
 	//Reading file
 	public List<String[]> getStoreDetailsAsList() throws FileNotFoundException
@@ -64,6 +65,12 @@ public class FileRepository {
 	{
 		list.clear();
 		return list = loadFileData(customerInfoPath);
+	}
+	
+	public List<String[]> getStoredBillInfosAsList() throws FileNotFoundException
+	{
+		list.clear();
+		return list = loadFileData(storedBillInfoPath);
 	}
 	
 	// Return the Path of ProductInfo File
@@ -131,6 +138,10 @@ public class FileRepository {
 	public void addNewCustomerInfoOnFile(String info) throws IOException
 	{
 		writeNewInfoOnFile(customerInfoPath, info);
+	}
+	public void addStoredBillInfoOnFile(String info) throws IOException
+	{
+		writeNewInfoOnFile(storedBillInfoPath, info);
 	}
 	
 	

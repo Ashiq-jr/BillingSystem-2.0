@@ -10,33 +10,22 @@ import store.StoreRepository;
 
 public class Bill {
 	
-	String shopName;
-	String gstNumber;
-	Address address;
-	
-	int number;
+	Store store;
+	String number;															
 	String date;
-	String customerId;
+	int customerId;
+	int empId;
 	List<ProductInCart> productsinCart;
 	double total;
+	PaymentType payType;
 	
 	//Getters
-	public String getShopName() {
-		return shopName;
+
+	public Store getStore() {
+		return store;
 	}
 
-
-	public String getGstNumber() {
-		return gstNumber;
-	}
-
-
-	public Address getAddress() {
-		return address;
-	}
-
-
-	public int getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
@@ -46,10 +35,18 @@ public class Bill {
 	}
 
 
-	public String getCustomerId() {
+	public int getCustomerId() {
 		return customerId;
 	}
 
+
+	public int getEmpId() {
+		return empId;
+	}
+
+	public PaymentType getPayType() {
+		return payType;
+	}
 
 	public List<ProductInCart> getProductsinCart() {
 		return productsinCart;
@@ -61,7 +58,7 @@ public class Bill {
 	}
 	
 	//Constructor
-	public Bill(int number, String date, String customerId, List<ProductInCart> productsinCart, double total) {
+	public Bill(String number, String date, int customerId, int empId, List<ProductInCart> productsinCart, double total, PaymentType payType) {
 
 		StoreRepository storeRep = new StoreRepository();
 		Store store = null;
@@ -70,22 +67,22 @@ public class Bill {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		this.shopName = store.getName();
-		this.gstNumber = store.getGstNumber();
-		this.address = store.getAddress();
+		this.store = store;
 		this.number = number;
 		this.date = date;
 		this.customerId = customerId;
+		this.empId = empId;
 		this.productsinCart = productsinCart;
 		this.total = total;
+		this.payType = payType;
 	}
 
 
 	@Override
 	public String toString() {
-		return "shopName=" + shopName + ", gstNumber=" + gstNumber + ", address=" + address + ", number=" + number
+		return "shopName=" + store.getName() + ", gstNumber=" + store.getGstNumber() + ", address=" + store.getAddress() + ", number=" + number
 				+ ", date=" + date + ", customerId=" + customerId + ", productsinCart=" + productsinCart + ", total="
-				+ total + "]";
+				+ total;
 	}
 
 }

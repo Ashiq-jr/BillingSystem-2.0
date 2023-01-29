@@ -13,6 +13,14 @@ public class CustomerRepository {
 	static List<Customer> custList = new ArrayList<Customer>();
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	//Method to Load Customer Details in the List
 	
 	public void loadCustomerDetails() throws FileNotFoundException
@@ -97,6 +105,23 @@ public class CustomerRepository {
 			}
 		}
 		return false;
+	}
+	
+	// Method to Get Id Using Phone Number
+	
+	public int getIdUsingPhNumber(long phNumber) throws FileNotFoundException
+	{
+		int id = 0;
+		custList.clear();
+		this.loadCustomerDetails();
+		for(Customer x : custList)
+		{
+			if(x.getMobileNum() == phNumber)
+			{
+				id = x.getId();
+			}
+		}
+		return id;
 	}
 	 
 	//Method to Add a Customer to File

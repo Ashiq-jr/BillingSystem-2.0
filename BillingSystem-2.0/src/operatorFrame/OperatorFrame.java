@@ -42,6 +42,10 @@ import javax.swing.table.TableColumnModel;
 
 import bill.Bill;
 import bill.BillQueue;
+import bill.BillRepository;
+import bill.PaymentType;
+import bill.StoredBillInfo;
+import bill.StoredBillInfoRepository;
 import customer.Customer;
 import customer.CustomerRepository;
 
@@ -99,7 +103,8 @@ public class OperatorFrame extends JFrame {
 	private JButton btnUpdateBill;
 	private static int billNumber = 0;
 	private static int i = 1;
-	private static int custId;
+	private static int custId = 0;
+	private static int empId = 0;
 
 	/**
 	 * Launch the application.
@@ -243,10 +248,6 @@ public class OperatorFrame extends JFrame {
 		panel_1.add(btnSubmit);
 		
 		btnBill = new JButton("PAYMENT");
-		btnBill.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnBill.setBounds(735, 602, 148, 32);
 		contentPane.add(btnBill);
 		
@@ -284,8 +285,8 @@ public class OperatorFrame extends JFrame {
 		LoginInfo info = logRep.getCurrentUser();
 		
 		EmployeeRepository empRep = new EmployeeRepository();
-		int id = Integer.parseInt(info.getName());
-		Employee employee = empRep.findEmployeeById(id);
+		empId = Integer.parseInt(info.getName());
+		Employee employee = empRep.findEmployeeById(empId);
 		lblCurrentUser.setText("Welcome :" + " " + employee.getName() + " ( " + employee.getDesignation() + " )" );
 		
 		LocalDate date = LocalDate.now();
@@ -505,10 +506,29 @@ public class OperatorFrame extends JFrame {
 			}
 		});	
 		
-		// Button to Add Customer
+		// Button to Add Customer to Bill
 		
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				long phNumber = Long.parseLong(tFieldPhNumber.getText());;
+				CustomerRepository custRep = new CustomerRepository();
+				try {
+					if(custRep.isPhoneNumberValid(phNumber))
+					{
+						custId = custRep.getIdUsingPhNumber(phNumber);
+						JOptionPane.showMessageDialog(null, "CUSTOMER ADDED TO BILL", "SUCCESS", JOptionPane.OK_OPTION);
+						tFieldPhNumber.setText("");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null,  "INVALID PHONE NUMBER", "ERROR", JOptionPane.OK_OPTION);
+					}
+				} catch (FileNotFoundException e1) {
+
+					e1.printStackTrace();
+				}
+				
 				
 	
 			}
@@ -519,13 +539,13 @@ public class OperatorFrame extends JFrame {
 		btnSaveBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if(table.getRowCount() >= 1)
+				if(table.getRowCount() >= 1 && custId != 0)
 				{
 					billNumber = i;
 					BillQueue bq = new BillQueue();
 					int tempBNo = billNumber;
 					String bDate = date.format(dateFormatter);
-					String id = String.valueOf(custId);
+					int id = custId;
 					List<ProductInCart> list = null;
 					try {
 						list = getTableToList(table);
@@ -533,8 +553,8 @@ public class OperatorFrame extends JFrame {
 						e1.printStackTrace();
 					}
 					double total = getTotal(table);
-					Bill bill = new Bill(tempBNo,bDate,id,list, total);
-					if(!bq.billNumberExists(tempBNo))
+					Bill bill = new Bill(String.valueOf(tempBNo), bDate, id, empId, list, total, PaymentType.CASH);
+					if(!bq.billNumberExists(String.valueOf(tempBNo)))
 					{
 						bq.addBill(bill);
 					}
@@ -543,6 +563,7 @@ public class OperatorFrame extends JFrame {
 					clearTable(table);
 					lblShowTotal.setText("");
 					i++;
+					custId = 0;
 				}
 				else
 				{
@@ -560,7 +581,7 @@ public class OperatorFrame extends JFrame {
 				BillQueue queue = new BillQueue();
 				int tempBNo = billNumber;
 				String bDate = date.format(dateFormatter);
-				String id = String.valueOf(custId);
+				int id = custId;
 				List<ProductInCart> list = null;
 				try {
 					list = getTableToList(table);
@@ -568,8 +589,8 @@ public class OperatorFrame extends JFrame {
 					e1.printStackTrace();
 				}
 				double total = getTotal(table);
-				Bill currentBill = new Bill(tempBNo,bDate,id,list, total);
-				queue.updateBill(currentBill, billNumber);
+				Bill currentBill = new Bill(String.valueOf(tempBNo),bDate,id, empId, list, total, PaymentType.CASH);
+				queue.updateBill(currentBill,String.valueOf(billNumber));
 				
 			}
 		});
@@ -581,11 +602,15 @@ public class OperatorFrame extends JFrame {
 				
 				model.setRowCount(0);
 				BillQueue bq = new BillQueue();
-				Bill nextBill = bq.getNextBill(billNumber);			
-				setTableUsingList(table, row, nextBill);
-				double total = getTotal(table);
-				lblShowTotal.setText(String.valueOf(total));
-				billNumber = nextBill.getNumber();
+				int noOfBills = bq.getBillsInListCount();
+				if(noOfBills >= 1)
+				{
+					Bill nextBill = bq.getNextBill(String.valueOf(billNumber));			
+					setTableUsingList(table, row, nextBill);
+					double total = getTotal(table);
+					lblShowTotal.setText(String.valueOf(total));
+					billNumber = Integer.parseInt(nextBill.getNumber());
+				}
 			
 			}
 		});
@@ -602,11 +627,11 @@ public class OperatorFrame extends JFrame {
 				int noOfBills = bq.getBillsInListCount();
 				if(noOfBills >= 1)
 				{
-					Bill previousBill = bq.getPreviousBill(billNumber);		
+					Bill previousBill = bq.getPreviousBill(String.valueOf(billNumber));		
 					setTableUsingList(table, row, previousBill);
 					double total = getTotal(table);
 					lblShowTotal.setText(String.valueOf(total));
-					billNumber = previousBill.getNumber();
+					billNumber = Integer.parseInt(previousBill.getNumber());
 				}
 			}
 		});
@@ -617,6 +642,7 @@ public class OperatorFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				model.setRowCount(0);
+				lblShowTotal.setText("");
 			}
 		});
 		
@@ -637,6 +663,66 @@ public class OperatorFrame extends JFrame {
 				
 				ViewCustomerFrame vcFrame = new ViewCustomerFrame();
 				vcFrame.setVisible(true);
+			}
+		});
+		
+		// Add Bill to File
+		
+		btnBill.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(table.getRowCount() >= 1)
+				{
+					
+					JComboBox<PaymentType> cBoxPayType = new JComboBox<PaymentType>();
+					PaymentType[] pt = PaymentType.values();
+					for(PaymentType x : pt)
+					{
+						cBoxPayType.addItem(x);
+					}
+					int input;
+					PaymentType payType = null;
+					input  = JOptionPane.showConfirmDialog(null, cBoxPayType, "SELECT PAYMENT TYPE", JOptionPane.DEFAULT_OPTION);
+					if(input == JOptionPane.OK_OPTION )
+					{
+						payType = (PaymentType)(cBoxPayType.getSelectedItem());
+					}
+					
+					BillQueue queue = new BillQueue();
+					Bill tempBill = queue.popBillOutOfQueue(String.valueOf(billNumber));
+					BillRepository billRep = new BillRepository();
+					StoredBillInfoRepository storedBillRep = new StoredBillInfoRepository();
+					
+					String number = "";
+					try {
+						number = billRep.generateBillNumber();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					Bill finalBill = new Bill(number, tempBill.getDate(), tempBill.getCustomerId(), tempBill.getEmpId(), tempBill.getProductsinCart(), tempBill.getTotal(), payType);
+					StoredBillInfo storedBillInfo = new StoredBillInfo(number, tempBill.getDate(), tempBill.getCustomerId(), tempBill.getEmpId());
+					
+					try {
+						
+						billRep.storeBill(finalBill);
+						storedBillRep.writeNewBillInfo(storedBillInfo);
+						
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					queue.removeBill(String.valueOf(billNumber));
+					int billCount = queue.getBillsInListCount();
+					if(billCount >=1)
+					{
+						billNumber = Integer.parseInt(queue.getExitingBillNumber());
+					}					
+					model.setRowCount(0);
+					lblShowTotal.setText("");
+				}
+
+				
 			}
 		});
 		

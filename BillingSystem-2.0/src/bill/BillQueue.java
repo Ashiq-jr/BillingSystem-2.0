@@ -6,17 +6,20 @@ public class BillQueue {
 
 	
 	 static List<Bill> queue = new ArrayList<Bill>();
+	 static List<String> billNumberList =new ArrayList<String>() ;
 	 
 	 
-	 public List<Bill> getQueue() {
+	 // Getters
+	 
+	public List<Bill> getQueue() {
 		return queue;
 	}
 
-	public static List<Integer> getBillNumberList() {
+	public static List<String> getBillNumberList() {
 		return billNumberList;
 	}
 
-	static List<Integer> billNumberList =new ArrayList<Integer>() ;
+	
 	 
 	 
 	 
@@ -24,25 +27,26 @@ public class BillQueue {
 	 
 	 
 	 //Method to Generate Temp Bill Number
-	 public int getTempBillNumber()
+	
+	 public String getTempBillNumber()
 	 {
 		 queue.sort(null);
 		 int bNo = 0;
 		 for(Bill x : queue)
 		 {
-			 bNo = x.getNumber();
+			 bNo = Integer.parseInt(x.getNumber());
 		 }
-		 return bNo + 1;
+		 return String.valueOf(bNo + 1);
 	 }
 	 
 	 //Method to get Index of a Bill
 	 
-	 public int getIndexOfABill(int billNumber)
+	 public int getIndexOfABill(String billNumber)
 	 {
 		 int index  = -1;
 		 for(Bill x : queue)
 		 {
-			 if(x.getNumber() == billNumber)
+			 if(x.getNumber().equals(billNumber))
 			 {
 				 index = queue.indexOf(x);
 			 }
@@ -55,30 +59,24 @@ public class BillQueue {
 		 queue.add(bill);	 
 	 }
 	 
-	 public void removeBill(int billNumber)
+	 public void removeBill(String billNumber)
 	 {
-		 for(Bill x : queue)
-		 {
-			 if(x.getNumber() == billNumber)
-			 {
-				 int index = queue.indexOf(x);
-				 queue.remove(index);
-			 }
-		 }
+		Bill bill = this.getBill(billNumber);
+		queue.remove(bill);
 	 }
 	 
-	 public void updateBill(Bill bill, int billNumber)
+	 public void updateBill(Bill bill, String billNumber)
 	 {
 		 int index = this.getIndexOfABill(billNumber);
 		 queue.set(index, bill);
 	 }
 	 
-	 public Bill getBill(int billNumber)
+	 public Bill getBill(String billNumber)
 	 {
 		 Bill bill = null;
 		 for(Bill x : queue)
 		 {			 
-			 if(x.getNumber() == billNumber)
+			 if(x.getNumber().equals(billNumber))
 			 {
 				 bill = x;
 			 }
@@ -86,7 +84,7 @@ public class BillQueue {
 		 return bill;
 	 }
 	 
-	 public List<Integer> getAllBillNumber()
+	 public List<String> getAllBillNumber()
 	 {
 		 billNumberList.clear();
 		 for(Bill x  :  queue)
@@ -96,20 +94,20 @@ public class BillQueue {
 		 return billNumberList;
 	 }
 	 
-	 public boolean billNumberExists(int billNumber)
+	 public boolean billNumberExists(String billNumber)
 	 {
 		 billNumberList.clear();
 		 billNumberList = this.getAllBillNumber();
 		 return billNumberList.contains(billNumber);
 	 }
 	 
-	 public Bill getNextBill(int billNumber)
+	 public Bill getNextBill(String billNumber)
 	 {
 		 int noOfBills = this.getBillsInListCount();
 		 Bill bill = null;	
 		 for(Bill x : queue)
 		 {
-			 if(x.getNumber() == billNumber)
+			 if(x.getNumber().equals(billNumber))
 			 {
 				 int index = queue.indexOf(x);
 				 if(index < noOfBills - 1)
@@ -125,13 +123,12 @@ public class BillQueue {
 		 return bill;
 	 }
 	 
-	 public Bill getPreviousBill(int billNumber)
+	 public Bill getPreviousBill(String billNumber)
 	 {
-		 int noOfBills = this.getBillsInListCount();
 		 Bill bill = null;	
 		 for(Bill x : queue)
 		 {
-			 if(x.getNumber() == billNumber)
+			 if(x.getNumber().equals(billNumber))
 			 {
 				 int index = queue.indexOf(x);
 				 if(index >= 1)
@@ -155,6 +152,29 @@ public class BillQueue {
 			 count++;
 		 }
 		 return count;
+	 }
+	 
+	 public Bill popBillOutOfQueue(String billNumber)
+	 {
+		 Bill bill = null;
+		 for(Bill x : queue)
+		 {
+			 if(x.getNumber().equals(billNumber))
+			 {
+				 bill = x;
+			 }
+		 }
+		 return bill;
+	 }
+	 
+	 public String getExitingBillNumber()
+	 {
+		 String billNumber = "";
+		 for(Bill x : queue)
+		 {
+			 billNumber = x.getNumber();
+		 }
+		 return billNumber;
 	 }
 	 
 }

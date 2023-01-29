@@ -3,6 +3,7 @@ import java.util.*;
 
 import bill.Bill;
 import bill.BillQueue;
+import bill.BillRepository;
 import category.Category;
 import customer.Customer;
 import customer.CustomerRepository;
@@ -126,10 +127,13 @@ public class App {
 ////		custRep.addCustToTempList(customer1);
 //		System.out.println(custRep.getTempId());
 		
-		CustomerRepository cp = new CustomerRepository();
-		int id  = cp.generateCustomerId();
-		System.out.println(id);
-		
+//		CustomerRepository cp = new CustomerRepository();
+//		int id  = cp.getIdUsingPhNumber(7395892452l);
+//		System.out.println(id);
+//		
 
+		BillRepository bp = new BillRepository();
+		String temp = bp.generateBillNumber();
+		System.out.println(temp);
 }
 }
