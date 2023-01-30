@@ -9,6 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
+import bill.Bill;
+import bill.BillRepository;
+import bill.StoredBillInfoRepository;
 import category.Category;
 import category.CategoryRepository;
 
@@ -18,6 +21,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -45,6 +49,11 @@ public class ManagerFrame extends JFrame {
 	private JButton btnRemoveTaxCat;
 	private JLabel lblEditTaxPercentage;
 	private JButton btnEditTaxPercent;
+	private JTextField tFieldEnterBillNumber;
+	
+	private static List<String> billNumbersList = new ArrayList<String>();
+	private JLabel lblViewCustomer;
+	private JButton btnLoadCustmer;
 
 	public ManagerFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -163,6 +172,30 @@ public class ManagerFrame extends JFrame {
 		panel_1_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		panel_1_1.setBounds(451, 323, 373, 356);
 		contentPane.add(panel_1_1);
+		panel_1_1.setLayout(null);
+		
+		JLabel lblViewBill = new JLabel("VIEW BILL :");
+		lblViewBill.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblViewBill.setBounds(31, 20, 85, 29);
+		panel_1_1.add(lblViewBill);
+		
+		tFieldEnterBillNumber = new JTextField();
+		tFieldEnterBillNumber.setColumns(10);
+		tFieldEnterBillNumber.setBounds(165, 24, 116, 23);
+		panel_1_1.add(tFieldEnterBillNumber);
+		
+		JButton btnView = new JButton("VIEW");
+		btnView.setBounds(291, 22, 72, 26);
+		panel_1_1.add(btnView);
+		
+		lblViewCustomer = new JLabel("VIEW CUSTOMER :");
+		lblViewCustomer.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblViewCustomer.setBounds(31, 83, 126, 29);
+		panel_1_1.add(lblViewCustomer);
+		
+		btnLoadCustmer = new JButton("VIEW");
+		btnLoadCustmer.setBounds(165, 85, 72, 26);
+		panel_1_1.add(btnLoadCustmer);
 		
 		
 		//Loading Add Product Form		
@@ -311,6 +344,60 @@ public class ManagerFrame extends JFrame {
 				}
 				
 				editProductFrame.setVisible(true);
+			}
+		});
+		
+		// Button to Load Load Bill Frame
+		
+		btnView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String enteredNumber = tFieldEnterBillNumber.getText();
+				if(!enteredNumber.isEmpty())
+				{
+					billNumbersList.clear();
+					StoredBillInfoRepository sbRep = new StoredBillInfoRepository();
+					try {
+						billNumbersList = sbRep.getListOfStoredBillNumbers();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					if(billNumbersList.contains(enteredNumber))
+					{
+						BillRepository billRep = new BillRepository();
+						Bill bill = null;
+						try {
+							bill = billRep.loadBillUsingBillNumber(enteredNumber);
+							billRep.passCurrentBillDetails(bill);
+							LoadBillFrame lbFrame = new LoadBillFrame();
+							lbFrame.setVisible(true);
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+						}						
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "INVALID BILL NUMBER", "ERROR", JOptionPane.OK_OPTION);
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "BILL NUMBER EMPTY", "ERROR", JOptionPane.OK_OPTION);
+				}
+				
+				tFieldEnterBillNumber.setText("");
+			}
+		});
+		
+		// Button to Load View Customer Details Frame
+		
+		btnLoadCustmer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ViewCustomerDetailFrame vcFrame = new ViewCustomerDetailFrame();
+				vcFrame.setVisible(true);
 			}
 		});
 		

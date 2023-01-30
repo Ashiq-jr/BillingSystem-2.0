@@ -787,8 +787,7 @@ public class OperatorFrame extends JFrame {
 		{
 						
 			while(i < list.size())
-			{
-				
+			{				
 				row[0] = x.getS_No();
 				row[1] = x.getProduct().getName();
 				row[2] = x.getProduct().getUnitPrice();
@@ -796,7 +795,6 @@ public class OperatorFrame extends JFrame {
 				row[4] = x.getNetPrice();
 				
 				model.addRow(row);
-
 				i++;
 				break;
 			}

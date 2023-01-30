@@ -8,7 +8,7 @@ import fileRepository.FileRepository;
 public class StoredBillInfoRepository {
 	
 	static List<StoredBillInfo> billInfoList = new ArrayList<StoredBillInfo>();
-	
+	static List<String> billNumbersList = new ArrayList<String>();
 	
 	
 	//Method to Load BillInfo's into a List
@@ -34,5 +34,61 @@ public class StoredBillInfoRepository {
 		FileRepository fp = new FileRepository();
 		fp.addStoredBillInfoOnFile(info);
 	}
+	
+	//Method to Get List of Stored Bill Numbers
 
+	public List<String> getListOfStoredBillNumbers() throws IOException
+	{
+		billInfoList.clear();
+		this.loadStoreInfoList();
+		
+		for(StoredBillInfo x : billInfoList)
+		{
+			String number = x.getBillNumber();
+			billNumbersList.add(number);
+		}
+		
+		return billNumbersList;
+
+	}
+	
+	// Method to Get Bill Date Using Bill Number
+	
+	public String getBillDateUsingBillNumber(String billNumber) throws IOException
+	{
+		String date = "";
+		billInfoList.clear();
+		this.loadStoreInfoList();
+		for(StoredBillInfo x : billInfoList)
+		{
+			if(x.getBillNumber().equals(billNumber))
+			{
+				date = x.getDate();
+			}
+		}
+		
+		return date;
+	}
+	
+	// Method to Return Bill Numbers Of Bill Purchased By a Particular Customer
+	
+	public List<String> getBillNumbersUsingCustomerId(int customerId) throws IOException
+	{
+		billInfoList.clear();
+		billNumbersList.clear();
+		this.loadStoreInfoList();
+		
+		for(StoredBillInfo x : billInfoList)
+		{
+			if(x.getCustomerId() == customerId)
+			{
+				billNumbersList.add(x.getBillNumber());
+			}
+			
+		}
+		return billNumbersList;
+	}
+	
+	
+	
 }

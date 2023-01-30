@@ -5,6 +5,7 @@ import java.util.*;
 
 import product.Product;
 import product.ProductInCart;
+import product.ProductRepository;
 import store.Store;
 
 import java.time.LocalDate;
@@ -12,8 +13,10 @@ import java.time.format.DateTimeFormatter;
 
 public class BillRepository {
 	
+	private static Bill currentBill;
 	private static String currentBillNumber = "";
 	private static String currentDate = "";
+	private static List<ProductInCart> cartList = new ArrayList<ProductInCart>();
 	
 	
 	//Method to Generate Bill Number. Also Creates a Folder on Toady's Date to Store the Bill Along with Bill File.
@@ -80,22 +83,120 @@ public class BillRepository {
 
 		String billfilePath = "C:\\Users\\ashiq\\OneDrive\\Documents\\Bills\\"+ currentDate +"\\" + currentBillNumber + ".txt";
         FileWriter billWriter = new FileWriter(billfilePath);
-        billWriter.write("BILL DETAILS : " + "\n");
-        billWriter.write(bill.getNumber() + "|" + bill.date + "|" + bill.getCustomerId() + "|" + bill.getEmpId());
+        billWriter.write("BILL_DETAILS:" + "\n");
+        billWriter.write(bill.getNumber() + "|" + bill.date + "|" + bill.getCustomerId() + "|" + bill.getEmpId() +"\n");
         Store store = bill.getStore();
-        billWriter.write("\nSTORE DETAILS : " +"\n");
-        billWriter.write(store.getName() + "|" + store.getAddress().getDoorNo() + "|" + store.getAddress().getArea() + "|" + store.getAddress().getCity() + "|" + store.getAddress().getState() + "|" + store.getAddress().getPincode() + "|" + store.getGstNumber() + "|" + store.getMobileNum() + "|" + store.getMailId());
-        billWriter.write("\nITEMS BOUGHT  " + "\n");
+        billWriter.write("\nSTORE_DETAILS:" +"\n");
+        billWriter.write(store.getName() + "|" + store.getAddress().getDoorNo() + "|" + store.getAddress().getArea() + "|" + store.getAddress().getCity() + "|" + store.getAddress().getState() + "|" + store.getAddress().getPincode() + "|" + store.getGstNumber() + "|" + store.getMobileNum() + "|" + store.getMailId() +"\n");
+        billWriter.write("\nITEMS_BOUGHT:" + "\n");
         for(ProductInCart x : bill.getProductsinCart())
         {
         	Product pr = x.getProduct();
             billWriter.write(x.getS_No() + "|" + pr.getName() + "|" +  pr.getUnitPrice() + "|" + x.getQuantity()  + "|" +  x.getNetPrice() + "\n");
         }
-        billWriter.write("TOTAL : \n" + bill.getTotal());
-        billWriter.write("\nPAYMENT TYPE : \n" + bill.getPayType().toString());
+        billWriter.write("\nTOTAL:\n" + bill.getTotal() +"\n");
+        billWriter.write("\nPAYMENT_TYPE:\n" + bill.getPayType().toString());
         billWriter.close();
 	}
+	
+	public Bill loadBillUsingBillNumber(String billNumber) throws IOException
+	{
+		StoredBillInfoRepository sbRep = new StoredBillInfoRepository();		
+		String folderName = sbRep.getBillDateUsingBillNumber(billNumber);
+		String path = "C:\\Users\\ashiq\\OneDrive\\Documents\\Bills\\" + folderName + "\\" + billNumber + ".txt";
 		
+        File file = new File(path);
+        List<String[]> billDetails = new ArrayList<String[]>();
+        List<String[]> storeDetails = new ArrayList<String[]>();
+        List<String[]> cart = new ArrayList<String[]>();
+        String total = "";
+        String payType = "";
+        Scanner sc = new Scanner(file);
+        sc.nextLine();
+        while(sc.hasNext())
+        {
+            String temp = sc.next();           
+            if(temp.equals("STORE_DETAILS:"))
+            {
+                break;
+            }
+            String[] sam = temp.split("\\|");
+            billDetails.add(sam);
+        }
+        sc.nextLine();
+        while(sc.hasNext())
+        {
+            String temp = sc.next();
+            if(temp.equals("ITEMS_BOUGHT:"))
+            {
+                break;
+            }
+            String[] sam1 = temp.split("\\|");
+            storeDetails.add(sam1);
+        }
+        sc.nextLine();
+        while(sc.hasNext())
+        {
+            String temp = sc.next();
+            if(temp.equals("TOTAL:"))
+            {
+                break;
+            }
+            String[] sam1 = temp.split("\\|");
+            cart.add(sam1);
+        }
+        sc.nextLine();
+        total = sc.nextLine();
+        sc.nextLine();
+        sc.nextLine();
+        payType = sc.nextLine();
+        sc.close();
+        
+        int custId = 0;
+        int empId = 0;
+        
+        //Working on Bill Details
+        for(String[] x : billDetails)
+        {
+        	currentBillNumber = x[0];
+        	currentDate = x[1];
+        	custId = Integer.parseInt(x[2]);
+        	empId = Integer.parseInt(x[3]);
+        }
+        
+        
+        //Working on cart
+        cartList.clear();
+        for(String[] x : cart)
+        {
+        	ProductRepository prodRep = new ProductRepository();
+        	int s_No = Integer.parseInt(x[0]);
+        	String name = x[1];
+        	Product product = prodRep.getProductUsingName(name);
+        	int quantity = Integer.parseInt(x[3]);
+        	double netPrice = Double.parseDouble(x[4]);
+        	ProductInCart pc = new ProductInCart(s_No, product, quantity, netPrice);
+        	cartList.add(pc);
+        }
+        
+        //Creating Bill
+        Bill bill = new Bill(currentBillNumber, currentDate, custId, empId, cartList, Double.parseDouble(total), PaymentType.valueOf(payType));
+        return bill;
+	}
+	
+	// Method to Hold Current Bill Details
+	
+	public void passCurrentBillDetails(Bill bill)
+	{
+		currentBill = new Bill(bill.getNumber(), bill.getDate(), bill.getCustomerId(), bill.getEmpId(), bill.getProductsinCart(), bill.getTotal(), bill.getPayType());
+	}
+	
+	// Method to Pass Current Bill Details
+	
+	public Bill getCurrentBillDetails()
+	{
+		return currentBill;
+	}
 
 
 	
