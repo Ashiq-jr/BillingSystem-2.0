@@ -4,9 +4,12 @@ import java.util.*;
 import bill.Bill;
 import bill.BillQueue;
 import bill.BillRepository;
+import bill.StoredBillInfoRepository;
 import category.Category;
 import customer.Customer;
 import customer.CustomerRepository;
+import employee.EmployeePerformance;
+import employee.Performance;
 import fileRepository.FileRepository;
 import loginInfo.LoginInfo;
 import product.*;
@@ -131,9 +134,29 @@ public class App {
 //		int id  = cp.getIdUsingPhNumber(7395892452l);
 //		System.out.println(id);
 //		
+//
+//		List<String> employeeBillsList = new ArrayList<String>();
+//		
+//		StoredBillInfoRepository bp = new StoredBillInfoRepository();
+//		EmployeePerformance per = new EmployeePerformance();
+//		employeeBillsList = per.getThisWeeksCollection(110);
+////		
+//		for(String x : employeeBillsList)
+//		{
+//			System.out.println(x);
+//		}
+		
+		
+		
+		
+//		String temp = bp.getBillDateUsingBillNumber("2023-01-31-INV-1");
+//		System.out.println(temp);
+		
+		
+		EmployeePerformance per = new EmployeePerformance();
+		double total = per.getThisMonthsCollection(109);
 
-		BillRepository bp = new BillRepository();
-		String temp = bp.generateBillNumber();
-		System.out.println(temp);
+		System.out.println(total);
+		
 }
 }

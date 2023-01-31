@@ -197,6 +197,14 @@ public class BillRepository {
 	{
 		return currentBill;
 	}
+	
+	// Method to Get Total Using Bill Number
+	
+	public double getTotalUsingBillNumber(String billNumber) throws IOException
+	{
+		Bill bill = this.loadBillUsingBillNumber(billNumber);
+		return bill.getTotal();
+	}
 
 
 	

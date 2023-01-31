@@ -89,6 +89,26 @@ public class StoredBillInfoRepository {
 		return billNumbersList;
 	}
 	
+	// Method to Return Bill Numbers Of Bill Purchased Done by a Paricular Employee
+	
+	public List<String> getBillNumbersUsingEmployeeId(int employeeId) throws IOException
+	{
+		billInfoList.clear();
+		billNumbersList.clear();
+		this.loadStoreInfoList();
+		
+		for(StoredBillInfo x : billInfoList)
+		{
+			if(x.getEmployeeId() == employeeId)
+			{
+				billNumbersList.add(x.getBillNumber());
+			}
+			
+		}
+		return billNumbersList;
+	}
+	
+	
 	
 	
 }
