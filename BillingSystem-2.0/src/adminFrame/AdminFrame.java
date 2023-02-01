@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
@@ -12,15 +15,19 @@ import employee.Employee;
 import employee.EmployeeRepository;
 import loginInfo.LoginInfo;
 import loginInfo.LoginInfoRepository;
+import mainFrame.MainFrame;
 import store.Address;
 import store.Store;
 import store.StoreRepository;
 
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -72,9 +79,12 @@ public class AdminFrame extends JFrame {
 	private JTextField tFieldStoreMobile;
 	private JLabel lblStoreEmail;
 	private JTextField tFieldStoreMail;
+	private JMenuBar menuBar;
+	private JMenu userMenu;
+	private JMenuItem logOut;
 
 	public AdminFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 1055, 718);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -291,12 +301,41 @@ public class AdminFrame extends JFrame {
 		btnUpdate.setBounds(288, 538, 85, 35);
 		panel_2.add(btnUpdate);
 		
+		//Adding LogOut in Menu Bar and LogOut Action.
+				menuBar = new JMenuBar();
+				
+				userMenu = new JMenu("User");
+				logOut = new JMenuItem("LogOut");
+				userMenu.add(logOut);
+				menuBar.add(userMenu);
+				this.setJMenuBar(menuBar);
+				logOut.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						JOptionPane pane = new JOptionPane("DO YOU WANT TO EXIT?", JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+						JDialog dialog = pane.createDialog(null, "WARNING");
+						dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+						dialog.setVisible(true);
+						int input = (Integer)pane.getValue();
+						
+						if(input == JOptionPane.OK_OPTION)
+						{
+							dispose();
+							MainFrame mFrame = new MainFrame();
+							mFrame.setVisible(true);
+						}
+					}
+				});
+		
 		//Filling the Designation ComboBox.
 		
 		cBoxDesignation.removeAllItems();
 		for(Designation designation : Designation.values())
 		{
-			cBoxDesignation.addItem(designation);
+			if(designation != designation.ADMIN)
+			{
+				cBoxDesignation.addItem(designation);
+			}
 		}
 		cBoxDesignation.setSelectedItem(null);
 		

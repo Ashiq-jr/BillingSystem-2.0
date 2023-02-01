@@ -7,9 +7,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import employee.Employee;
+import employee.EmployeePerformance;
 import employee.EmployeeRepository;
+import employee.Performance;
 import loginInfo.LoginInfo;
 import loginInfo.LoginInfoRepository;
+import mainFrame.MainFrame;
+import managerFrame.LoadBillFrame;
 import product.Product;
 import product.ProductInCart;
 import product.ProductRepository;
@@ -21,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import java.awt.Font;
 import java.io.FileNotFoundException;
@@ -29,6 +34,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import javax.swing.JPasswordField;
@@ -55,6 +61,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.management.loading.PrivateClassLoader;
+import javax.management.modelmbean.InvalidTargetObjectTypeException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -62,6 +71,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
@@ -78,8 +89,10 @@ public class OperatorFrame extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu viewMenu;
+	private JMenu userMenu;
 	private JMenuItem addCustomer;
 	private JMenuItem myPerformance;
+	private JMenuItem logOut;
 	private JMenuItem bill;
 	private JMenuItem customerDetails;
 	private JTextField tFieldProduct;
@@ -105,6 +118,9 @@ public class OperatorFrame extends JFrame {
 	private static int i = 1;
 	private static int custId = 0;
 	private static int empId = 0;
+	private static double oneDayCollection = 0;
+	private static double currentSessionCollection = 0;
+	private static Performance performance = null;
 
 	/**
 	 * Launch the application.
@@ -127,7 +143,7 @@ public class OperatorFrame extends JFrame {
 	 * @throws FileNotFoundException 
 	 */
 	public OperatorFrame() throws FileNotFoundException {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 1113, 721);
 		contentPane = new JPanel();
 		contentPane.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -263,18 +279,24 @@ public class OperatorFrame extends JFrame {
 		
 		fileMenu = new JMenu("File");
 		viewMenu = new JMenu("View");
-		
+		userMenu = new JMenu("User");
 		addCustomer = new JMenuItem("Add Customer");
-		myPerformance = new JMenuItem("My Performance");
 		bill = new JMenuItem("Bill");
 		customerDetails = new JMenuItem("Customer Details");
+		myPerformance = new JMenuItem("My Performance");
+		logOut = new JMenuItem("LogOut");
+
+		
 		fileMenu.add(addCustomer);
-		viewMenu.add(myPerformance);
 		viewMenu.add(bill);
 		viewMenu.add(customerDetails);
+		userMenu.add(myPerformance);
+		userMenu.add(logOut);
 		
 		menuBar.add(fileMenu);
 		menuBar.add(viewMenu);
+		menuBar.add(userMenu);
+
 		
 		this.setJMenuBar(menuBar);
 		
@@ -460,6 +482,9 @@ public class OperatorFrame extends JFrame {
 					lblShowTotal.setText(total);
 					updateSerialNum(table);
 				}
+				else {
+					JOptionPane.showMessageDialog(null, "SELECT A PRODUCT TO DELETE");
+				}
 			}
 		});
 		
@@ -501,6 +526,9 @@ public class OperatorFrame extends JFrame {
 					}
 									
 					
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "SELECT A PRODUCT TO EDIT QUANTITY");
 				}
 				
 			}
@@ -567,7 +595,7 @@ public class OperatorFrame extends JFrame {
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "EMPRTY BILL", "ERROR", JOptionPane.OK_OPTION);
+					JOptionPane.showMessageDialog(null, "EMPTY BILL / CUSTOMER ID", "ERROR", JOptionPane.OK_OPTION);
 				}
 		
 			}
@@ -579,18 +607,25 @@ public class OperatorFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				BillQueue queue = new BillQueue();
-				int tempBNo = billNumber;
-				String bDate = date.format(dateFormatter);
-				int id = custId;
-				List<ProductInCart> list = null;
-				try {
-					list = getTableToList(table);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				if(queue.billNumberExists(String.valueOf(billNumber)) && table.getRowCount() != 0)
+				{
+					int tempBNo = billNumber;
+					String bDate = date.format(dateFormatter);
+					int id = custId;
+					List<ProductInCart> list = null;
+					try {
+						list = getTableToList(table);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					double total = getTotal(table);
+					Bill currentBill = new Bill(String.valueOf(tempBNo),bDate,id, empId, list, total, PaymentType.CASH);
+					queue.updateBill(currentBill,String.valueOf(billNumber));
 				}
-				double total = getTotal(table);
-				Bill currentBill = new Bill(String.valueOf(tempBNo),bDate,id, empId, list, total, PaymentType.CASH);
-				queue.updateBill(currentBill,String.valueOf(billNumber));
+				else {
+					JOptionPane.showMessageDialog(null, "NOTHING TO UPFATE / BILL NOT IN QUEUE");
+				}
+
 				
 			}
 		});
@@ -610,6 +645,9 @@ public class OperatorFrame extends JFrame {
 					double total = getTotal(table);
 					lblShowTotal.setText(String.valueOf(total));
 					billNumber = Integer.parseInt(nextBill.getNumber());
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "NO BILL IN QUEUE");
 				}
 			
 			}
@@ -633,14 +671,16 @@ public class OperatorFrame extends JFrame {
 					lblShowTotal.setText(String.valueOf(total));
 					billNumber = Integer.parseInt(previousBill.getNumber());
 				}
+				else {
+					JOptionPane.showMessageDialog(null, "NO BILL IN QUEUE");
+				}
 			}
 		});
 		
 		// Button to Clear Table Contents
 		
 		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent e) {				
 				model.setRowCount(0);
 				lblShowTotal.setText("");
 			}
@@ -663,6 +703,46 @@ public class OperatorFrame extends JFrame {
 				
 				ViewCustomerFrame vcFrame = new ViewCustomerFrame();
 				vcFrame.setVisible(true);
+			}
+		});
+		
+		// Menu View Performance
+		
+		myPerformance.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				LoadTodaysCollectionAndPerformance(empId);
+				JOptionPane.showMessageDialog(null, "Performance : " + performance.toString() + "\nAmount Collected : " + oneDayCollection);
+			}
+		});
+		
+		// Menu LogOut
+		
+		logOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				BillQueue queue = new BillQueue();
+				int noOfBills = queue.getBillsInListCount();
+				int input = 0;
+				if(noOfBills >= 1)
+				{
+					JOptionPane pane = new JOptionPane("BILLS IN QUEUE WILL BE DELETED .\nDO YOU WANT TO EXIT?", JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+					JDialog dialog = pane.createDialog(null, "WARNING");
+					dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+					dialog.setVisible(true);
+					input = (Integer)pane.getValue();
+	
+				}
+				
+				if(input != JOptionPane.CANCEL_OPTION)
+				{
+					LoadTodaysCollectionAndPerformance(empId);
+					JOptionPane.showMessageDialog(null, "AMOUNT BILLED\n" + "THIS SESSION : " + currentSessionCollection + "\nTODAY : " + oneDayCollection);
+					dispose();
+					MainFrame mFrame = new MainFrame();
+					mFrame.setVisible(true);
+				}
+
 			}
 		});
 		
@@ -720,6 +800,12 @@ public class OperatorFrame extends JFrame {
 					}					
 					model.setRowCount(0);
 					lblShowTotal.setText("");
+					
+					currentSessionCollection += tempBill.getTotal();
+				}
+				else {
+	
+					JOptionPane.showMessageDialog(null, "SELECT A BILL FIRST");
 				}
 
 				
@@ -819,6 +905,21 @@ public class OperatorFrame extends JFrame {
 		}
 	
 	}
+	
+	public static void LoadTodaysCollectionAndPerformance(int id)
+	{		
+		EmployeePerformance empPer = new EmployeePerformance();
+		try {
+			
+			oneDayCollection = empPer.getTodaysCollection(id);
+			performance = empPer.getToadysPerformance(id);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
 
 		

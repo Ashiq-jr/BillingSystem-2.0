@@ -2,6 +2,7 @@ package employee;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -11,6 +12,7 @@ public class EmployeeRepository {
 	
 	
 	static TreeMap<Integer,Employee> tMap = new TreeMap<Integer,Employee>();
+	static List<Integer> empIdList = new ArrayList<Integer>();
 	
 	
 	
@@ -30,6 +32,21 @@ public class EmployeeRepository {
 		}
 		
 		return tMap;
+	}
+	
+	//Method to Get Employee Id's As a List
+	
+	public List<Integer> getEmployeeIdList() throws FileNotFoundException
+	{
+		empIdList.clear();
+		tMap.clear();
+		tMap = this.loadEmployeeInfo();
+		
+		for(int x : tMap.keySet())
+		{
+			empIdList.add(x);
+		}
+		return empIdList;
 	}
 	
 	//Methhod to Find An Employee Using his Id And Return Object
@@ -71,6 +88,26 @@ public class EmployeeRepository {
 		return tempEmployee;
 	}
 	
+	// Method to get Employee Name Using His Id
+	
+	public String getNameUsingId(int id) throws FileNotFoundException
+	{
+		tMap.clear();
+		tMap = this.loadEmployeeInfo();
+		Employee employee = new Employee();
+		String name = "";
+		for(Integer x : tMap.keySet())
+		{
+			employee = tMap.get(x);
+			if(employee.getId() == id)
+			{
+				name = employee.getName();
+			}
+		}
+		
+		return name;
+	}
+	
 	//Method to Generate New Employee Id
 	
 	public int generateNewEmployeeId() throws FileNotFoundException
@@ -87,6 +124,18 @@ public class EmployeeRepository {
 		}
 		
 		return id+1;
+		
+	}
+	
+	// Method to Check if An Employee Id Exists
+	
+	public boolean checkIfIdExists(int id) throws FileNotFoundException 
+	{
+		empIdList.clear();
+		empIdList = this.getEmployeeIdList();
+		if(empIdList.contains(id)) return true;
+		
+		return false;
 		
 	}
 	

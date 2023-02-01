@@ -163,7 +163,7 @@ public class ViewCustomerDetailFrame extends JFrame {
 								String mail = customer.getMailId();
 								StoredBillInfoRepository sbRep = new StoredBillInfoRepository();
 								billNumbersList.clear();
-								billNumbersList = sbRep.getBillNumbersUsingCustomerId(id);
+								billNumbersList = sbRep.getAllBillsPurchasedByACustomer(id);
 								
 								lblShowId.setText(String.valueOf(id));
 								lblShowName.setText(name);

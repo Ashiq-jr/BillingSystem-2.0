@@ -17,6 +17,7 @@ public class BillRepository {
 	private static String currentBillNumber = "";
 	private static String currentDate = "";
 	private static List<ProductInCart> cartList = new ArrayList<ProductInCart>();
+	static List<String> billsList = new ArrayList<String>();
 	
 	
 	//Method to Generate Bill Number. Also Creates a Folder on Toady's Date to Store the Bill Along with Bill File.
@@ -204,6 +205,27 @@ public class BillRepository {
 	{
 		Bill bill = this.loadBillUsingBillNumber(billNumber);
 		return bill.getTotal();
+	}
+	
+	// Method to Get OneDayCollection of Shop
+	
+	public double getShopsOneDayCollection()  throws IOException
+	{
+		double amount = 0;
+		DateTimeFormatter dFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		String date = LocalDate.now().format(dFormatter);
+		billsList.clear();
+		
+		StoredBillInfoRepository bRepository = new StoredBillInfoRepository();
+		billsList = bRepository.getBillsBilledOnParticularDate(date);
+		
+		for(String x : billsList)
+		{
+			double temp = getTotalUsingBillNumber(x);
+			amount += temp;
+		}
+		 
+		return amount;
 	}
 
 

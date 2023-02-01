@@ -22,9 +22,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JPasswordField;
 
 public class MainFrame extends JFrame {
 
@@ -32,8 +34,8 @@ public class MainFrame extends JFrame {
 	private JLabel lblName;
 	private JTextField textField_Name;
 	private JLabel lblPassword;
-	private JTextField textField_Password;
 	private JButton btnEnter;
+	private JPasswordField textField_Password;
 
 	/**
 	 * Launch the application.
@@ -79,16 +81,15 @@ public class MainFrame extends JFrame {
 		lblPassword.setBounds(118, 155, 98, 27);
 		contentPane.add(lblPassword);
 		
-		textField_Password = new JTextField();
-		textField_Password.setColumns(10);
-		textField_Password.setBounds(248, 154, 166, 28);
-		contentPane.add(textField_Password);
-		
 		btnEnter = new JButton("ENTER");
 		btnEnter.setBackground(Color.RED);
 		btnEnter.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnEnter.setBounds(211, 223, 94, 37);
 		contentPane.add(btnEnter);
+		
+		textField_Password = new JPasswordField();
+		textField_Password.setBounds(248, 157, 166, 27);
+		contentPane.add(textField_Password);
 		
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -105,10 +106,12 @@ public class MainFrame extends JFrame {
 				for(LoginInfo x : logList)
 				{
 					i++;
-					if(textField_Name.getText().toString().equals(x.getName()) && textField_Password.getText().toString().equals(x.getPassword()))
+					boolean checkPassword = Arrays.equals(textField_Password.getPassword(), x.getPassword().toCharArray()) ? true : false;
+				
+					if(textField_Name.getText().toString().equals(x.getName()) && checkPassword)
 					{
 						String name = textField_Name.getText();
-						String pwd = textField_Password.getText();
+						String pwd = textField_Password.getPassword().toString();
 						Designation designation = Designation.valueOf(x.getDesignation().name());
 						LoginInfo currentUser = new LoginInfo(name, pwd, designation);
 						LoginInfoRepository logRep = new LoginInfoRepository();

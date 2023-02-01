@@ -1,6 +1,8 @@
 package bill;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import fileRepository.FileRepository;
@@ -70,9 +72,9 @@ public class StoredBillInfoRepository {
 		return date;
 	}
 	
-	// Method to Return Bill Numbers Of Bill Purchased By a Particular Customer
+	// Method to Return a List of Bill Numbers Of Bill Purchased By a Particular Customer
 	
-	public List<String> getBillNumbersUsingCustomerId(int customerId) throws IOException
+	public List<String> getAllBillsPurchasedByACustomer(int customerId) throws IOException
 	{
 		billInfoList.clear();
 		billNumbersList.clear();
@@ -89,9 +91,9 @@ public class StoredBillInfoRepository {
 		return billNumbersList;
 	}
 	
-	// Method to Return Bill Numbers Of Bill Purchased Done by a Paricular Employee
+	// Method to Return a List Of Bill Numbers Of Bill, Billed by a Paricular Employee
 	
-	public List<String> getBillNumbersUsingEmployeeId(int employeeId) throws IOException
+	public List<String> getBillsBilledByAnEmployee(int employeeId) throws IOException
 	{
 		billInfoList.clear();
 		billNumbersList.clear();
@@ -108,7 +110,25 @@ public class StoredBillInfoRepository {
 		return billNumbersList;
 	}
 	
+	// Method to Return a List Of Bills Billed On Particular Date
 	
+	public List<String> getBillsBilledOnParticularDate(String date) throws IOException
+	{
+		billInfoList.clear();
+		billNumbersList.clear();
+		this.loadStoreInfoList();
+		
+		for(StoredBillInfo x : billInfoList)
+		{
+			if(x.getDate().equals(date))
+			{
+				billNumbersList.add(x.getBillNumber());
+			}
+			
+		}
+		return billNumbersList;
+	}
+		
 	
 	
 }

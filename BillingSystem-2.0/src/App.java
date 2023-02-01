@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import bill.Bill;
@@ -153,10 +155,32 @@ public class App {
 //		System.out.println(temp);
 		
 		
-		EmployeePerformance per = new EmployeePerformance();
-		double total = per.getThisMonthsCollection(109);
-
-		System.out.println(total);
+//		EmployeePerformance per = new EmployeePerformance();
+//		double total = per.getThisMonthsCollection(109);
+//
+//		System.out.println(total);
+		
+//		BillRepository billRepository = new BillRepository();
+//		double total = 0;
+//		try {
+//			total = billRepository.getShopsOneDayCollection();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//		System.out.println(total);
+		
+//		List<String> billsList = new ArrayList<String>();
+//		DateTimeFormatter dFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//		String date = LocalDate.now().format(dFormatter);
+//		
+//		StoredBillInfoRepository bRepository = new StoredBillInfoRepository();
+//		billsList = bRepository.getBillsBilledOnParticularDate(date);
+//		
+//		for(String x : billsList)
+//		{
+//			System.out.println(x);
+//		}
+//		System.out.println(date);
 		
 }
 }

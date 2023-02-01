@@ -174,54 +174,61 @@ public class AddProductFrame extends JFrame {
 		//Adding a new Product
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ProductRepository productRep = new ProductRepository();
-				int id  = 0;
-				try {
-					 id = productRep.generateProductId();
-				} catch (IOException e2) {
-					e2.printStackTrace();
+				if(tFieldName.getText().toString().isEmpty() || cBoxCategory.getSelectedItem() == null || cBoxSubCategory.getSelectedItem() == null || cBoxTaxCat.getSelectedItem() == null || tFieldPrice.getText().toString().isEmpty() )
+				{
+					JOptionPane.showMessageDialog(null, "EMPTY FIELDS", "ERROR", JOptionPane.OK_OPTION );
 				}
-				String name = tFieldName.getText();
-				String cat = cBoxCategory.getSelectedItem().toString();
-				Category category = new Category(cat);
-				String subCat = cBoxSubCategory.getSelectedItem().toString();
-				SubCategory subCategory = new SubCategory(category, subCat);
-				double price =Double.parseDouble(tFieldPrice.getText());
-				String tax = cBoxTaxCat.getSelectedItem().toString();
-				TaxCategoryRepository taxRep = new TaxCategoryRepository();
-				double taxValue = 0;
-				try {
-					 taxValue = taxRep.getTaxValue(tax);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				TaxCategory taxCategory = new TaxCategory(tax, taxValue);
-				
-				Product product = new Product(id, name, category, subCategory, price, taxCategory, Status.valueOf("ACTIVE") );
-				
-				try {
-					
-					List<String> nameList = productRep.getNameListOfProducts();
-					if(!nameList.contains(name))
-					{
-						productRep.addNewProduct(product);
-						JOptionPane.showMessageDialog(null, "PRODUCT ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				else 
+				{
+					ProductRepository productRep = new ProductRepository();
+					int id  = 0;
+					try {
+						 id = productRep.generateProductId();
+					} catch (IOException e2) {
+						e2.printStackTrace();
 					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "PRODUCT ALREADY EXISTS", "FAILED", JOptionPane.ERROR_MESSAGE);
+					String name = tFieldName.getText();
+					String cat = cBoxCategory.getSelectedItem().toString();
+					Category category = new Category(cat);
+					String subCat = cBoxSubCategory.getSelectedItem().toString();
+					SubCategory subCategory = new SubCategory(category, subCat);
+					double price =Double.parseDouble(tFieldPrice.getText());
+					String tax = cBoxTaxCat.getSelectedItem().toString();
+					TaxCategoryRepository taxRep = new TaxCategoryRepository();
+					double taxValue = 0;
+					try {
+						 taxValue = taxRep.getTaxValue(tax);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					TaxCategory taxCategory = new TaxCategory(tax, taxValue);
+					
+					Product product = new Product(id, name, category, subCategory, price, taxCategory, Status.valueOf("ACTIVE") );
+					
+					try {
+						
+						List<String> nameList = productRep.getNameListOfProducts();
+						if(!nameList.contains(name))
+						{
+							productRep.addNewProduct(product);
+							JOptionPane.showMessageDialog(null, "PRODUCT ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "PRODUCT ALREADY EXISTS", "FAILED", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					} catch (IOException e1) {
+						
 					}
 					
-				} catch (IOException e1) {
-					
+					cBoxCategory.setSelectedItem(null);
+					cBoxSubCategory.setSelectedItem(null);
+					tFieldName.setText("");
+					tFieldPrice.setText("");
+					cBoxTaxCat.setSelectedItem(null);
+					}
 				}
-				
-				cBoxCategory.setSelectedItem(null);
-				cBoxSubCategory.setSelectedItem(null);
-				tFieldName.setText("");
-				tFieldPrice.setText("");
-				cBoxTaxCat.setSelectedItem(null);
-			}
 		});
 		
 		//Reseting the Fields

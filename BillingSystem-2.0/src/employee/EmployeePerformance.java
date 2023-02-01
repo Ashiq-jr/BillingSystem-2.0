@@ -28,7 +28,7 @@ public class EmployeePerformance {
 		BillRepository billRep = new BillRepository();
 		employeeBillsList.clear();
 		try {
-			employeeBillsList = sbRep.getBillNumbersUsingEmployeeId(empId);
+			employeeBillsList = sbRep.getBillsBilledByAnEmployee(empId);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +57,7 @@ public class EmployeePerformance {
 		BillRepository billRep = new BillRepository();
 		employeeBillsList.clear();
 		try {
-			employeeBillsList = sbRep.getBillNumbersUsingEmployeeId(empId);
+			employeeBillsList = sbRep.getBillsBilledByAnEmployee(empId);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -87,7 +87,7 @@ public class EmployeePerformance {
 		BillRepository billRep = new BillRepository();
 		employeeBillsList.clear();
 		try {
-			employeeBillsList = sbRep.getBillNumbersUsingEmployeeId(empId);
+			employeeBillsList = sbRep.getBillsBilledByAnEmployee(empId);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

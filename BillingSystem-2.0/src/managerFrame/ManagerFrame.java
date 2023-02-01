@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
@@ -14,11 +17,16 @@ import bill.BillRepository;
 import bill.StoredBillInfoRepository;
 import category.Category;
 import category.CategoryRepository;
+import mainFrame.MainFrame;
 
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,13 +58,20 @@ public class ManagerFrame extends JFrame {
 	private JLabel lblEditTaxPercentage;
 	private JButton btnEditTaxPercent;
 	private JTextField tFieldEnterBillNumber;
-	
-	private static List<String> billNumbersList = new ArrayList<String>();
+	private JMenuBar menuBar;
+	private JMenu userMenu;
+	private JMenuItem logOut;
 	private JLabel lblViewCustomer;
 	private JButton btnLoadCustmer;
+	private JLabel lblEmployeePerformance;
+	private JButton btnLoadEmpPerformance;
+	
+	
+	private static List<String> billNumbersList = new ArrayList<String>();
+
 
 	public ManagerFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 865, 726);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -194,10 +209,54 @@ public class ManagerFrame extends JFrame {
 		panel_1_1.add(lblViewCustomer);
 		
 		btnLoadCustmer = new JButton("VIEW");
-		btnLoadCustmer.setBounds(165, 85, 72, 26);
+		btnLoadCustmer.setBounds(225, 85, 72, 26);
 		panel_1_1.add(btnLoadCustmer);
 		
+		lblEmployeePerformance = new JLabel("EMPLOYEE PERFORMANCE :");
+		lblEmployeePerformance.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblEmployeePerformance.setBounds(31, 143, 185, 29);
+		panel_1_1.add(lblEmployeePerformance);
 		
+		btnLoadEmpPerformance = new JButton("VIEW");
+		btnLoadEmpPerformance.setBounds(225, 145, 72, 26);
+		panel_1_1.add(btnLoadEmpPerformance);
+		
+		JLabel lblTotalCollectionFor = new JLabel("TOTAL AMOUNT COLLECTED :");
+		lblTotalCollectionFor.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblTotalCollectionFor.setBounds(31, 214, 185, 29);
+		panel_1_1.add(lblTotalCollectionFor);
+		
+		JButton btnLoadEmpPerformance_1 = new JButton("VIEW");
+		btnLoadEmpPerformance_1.setBounds(225, 216, 72, 26);
+		panel_1_1.add(btnLoadEmpPerformance_1);
+		
+		//Adding LogOut in Menu Bar and LogOut Action.
+		menuBar = new JMenuBar();
+		
+		userMenu = new JMenu("User");
+		logOut = new JMenuItem("LogOut");
+		userMenu.add(logOut);
+		menuBar.add(userMenu);
+		this.setJMenuBar(menuBar);
+		
+		logOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				JOptionPane pane = new JOptionPane("DO YOU WANT TO EXIT?", JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+				JDialog dialog = pane.createDialog(null, "WARNING");
+				dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+				dialog.setVisible(true);
+				int input = (Integer)pane.getValue();
+				
+				if(input == JOptionPane.OK_OPTION)
+				{
+					dispose();
+					MainFrame mFrame = new MainFrame();
+					mFrame.setVisible(true);
+				}
+			}
+		});
+			
 		//Loading Add Product Form		
 		btnAddProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -398,6 +457,32 @@ public class ManagerFrame extends JFrame {
 				
 				ViewCustomerDetailFrame vcFrame = new ViewCustomerDetailFrame();
 				vcFrame.setVisible(true);
+			}
+		});
+		
+		// Button to Load View Employee Performance Frame
+		
+		btnLoadEmpPerformance.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				EmployeePerformanceFrame empPerFrame = new EmployeePerformanceFrame();
+				empPerFrame.setVisible(true);
+			}
+		});
+		
+		//Button to Get Active Collection of the Store for the Day
+		
+		btnLoadEmpPerformance_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				BillRepository billRepository = new BillRepository();
+				double total = 0;
+				try {
+					total = billRepository.getShopsOneDayCollection();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(null, "TOTAL AMOUNT COLLECTED FOR CURRENT WORKING DAY : " + total);
 			}
 		});
 		
