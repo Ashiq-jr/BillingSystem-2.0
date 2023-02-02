@@ -143,6 +143,7 @@ public class ViewCustomerDetailFrame extends JFrame {
 				lblShowName.setText("");
 				lblShowPhNumber.setText("");
 				lblShowMail.setText("");
+				cBoxBillNumbers.removeAllItems();
 				
 				if(!tFieldPhNumber.getText().isEmpty())
 				{
@@ -189,7 +190,7 @@ public class ViewCustomerDetailFrame extends JFrame {
 				
 				else
 				{
-					JOptionPane.showMessageDialog(null, "EMPTY FIELD", "ERROR", JOptionPane.OK_OPTION );
+					JOptionPane.showMessageDialog(null, "EMPTY FIELD", "ERROR", JOptionPane.ERROR_MESSAGE );
 				}
 			}
 		});

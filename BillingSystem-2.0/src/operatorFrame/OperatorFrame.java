@@ -17,6 +17,7 @@ import managerFrame.LoadBillFrame;
 import product.Product;
 import product.ProductInCart;
 import product.ProductRepository;
+import product.Status;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -168,8 +169,8 @@ public class OperatorFrame extends JFrame {
 		contentPane.add(lblLogTime);
 		
 		lblDate = new JLabel();
-		lblDate.setBounds(962, 43, 288, 26);
-		lblDate.setText("LOGGED-IN @ : 22:40\n  DATE : 23-01-2023");
+		lblDate.setBounds(962, 43, 137, 26);
+		lblDate.setText("DATE : 23-01-2023");
 		lblDate.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		contentPane.add(lblDate);
 		
@@ -338,7 +339,7 @@ public class OperatorFrame extends JFrame {
 					for(Product x : prodList)
 					{
 						
-						if(x.getName().contains(enteredText))  
+						if(x.getName().contains(enteredText) && x.getStatus() != Status.DISCONTINUED)  
 						{
 							scrollPaneList.setVisible(true);
 							list.setVisible(true);

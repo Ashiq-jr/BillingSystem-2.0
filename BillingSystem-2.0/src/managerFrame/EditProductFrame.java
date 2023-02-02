@@ -17,6 +17,7 @@ import subCategory.SubCategory;
 import subCategory.SubCategoryRepository;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.io.FileNotFoundException;
@@ -207,7 +208,7 @@ public class EditProductFrame extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(cBoxProduct.getSelectedItem() != null)
+				if(cBoxProduct.getSelectedItem() != null && cBoxCategory.getSelectedItem() != null && cBoxSubCategory.getSelectedItem() != null)
 				{
 					String name = cBoxProduct.getSelectedItem().toString();					
 					prodList.clear();
@@ -257,6 +258,10 @@ public class EditProductFrame extends JFrame {
 					}
 					cBoxStatus.setSelectedItem(status);
 		
+				}
+				
+				else {
+					JOptionPane.showMessageDialog(null, "EMPTY FIRLDS", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}

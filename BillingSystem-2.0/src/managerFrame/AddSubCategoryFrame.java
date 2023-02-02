@@ -89,28 +89,36 @@ public class AddSubCategoryFrame extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String catName = cBoxCategory.getSelectedItem().toString();
-				Category category = new Category(catName);
-				String subName = tFieldSubCategory.getText().toUpperCase();
-				SubCategory subCategory = new SubCategory(category,subName);
-				SubCategoryRepository subRep = new SubCategoryRepository();
-				try {
-					List<String> nameList = subRep.getNameList();
-					if(!nameList.contains(subName))
-					{
-						subRep.addSubCategory(subCategory);
-						JOptionPane.showMessageDialog(null, "SUB CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-						tFieldSubCategory.setText("");
-						cBoxCategory.setSelectedItem(null);
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "SUB CATEGORY EXISTS", "ERROR", JOptionPane.ERROR_MESSAGE);
-					}
-					
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				if(cBoxCategory.getSelectedItem() == null || tFieldSubCategory.getText().toString().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "EMPTY FIELDS", "ERROR", JOptionPane.OK_OPTION );
 				}
+				else {
+					
+					String catName = cBoxCategory.getSelectedItem().toString();
+					Category category = new Category(catName);
+					String subName = tFieldSubCategory.getText().toUpperCase();
+					SubCategory subCategory = new SubCategory(category,subName);
+					SubCategoryRepository subRep = new SubCategoryRepository();
+					try {
+						List<String> nameList = subRep.getNameList();
+						if(!nameList.contains(subName))
+						{
+							subRep.addSubCategory(subCategory);
+							JOptionPane.showMessageDialog(null, "SUB CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+							tFieldSubCategory.setText("");
+							cBoxCategory.setSelectedItem(null);
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "SUB CATEGORY EXISTS", "ERROR", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
 			}
 		});
 	}

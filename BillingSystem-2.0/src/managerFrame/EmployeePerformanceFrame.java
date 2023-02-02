@@ -203,13 +203,13 @@ public class EmployeePerformanceFrame extends JFrame {
 					
 					else 
 					{
-						JOptionPane.showMessageDialog(null, "INVALID ID", "ERROR", JOptionPane.OK_OPTION);
+						JOptionPane.showMessageDialog(null, "INVALID ID", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
 				else {
 					
-					JOptionPane.showMessageDialog(null, "EMPTY FIELDS", "ERROR", JOptionPane.OK_OPTION);
+					JOptionPane.showMessageDialog(null, "EMPTY FIELDS", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 					
 				

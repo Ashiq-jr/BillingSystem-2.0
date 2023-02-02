@@ -73,29 +73,37 @@ public class AddTaxCategoryFrame extends JFrame {
 		
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				String taxName = tFieldTaxName.getText().toUpperCase();
-				double taxPercent = Double.parseDouble(tFieldTaxPercent.getText());
-				
-				TaxCategory tax = new TaxCategory(taxName, taxPercent);
-				TaxCategoryRepository taxRep = new TaxCategoryRepository();
-				try {
-					
-					List<String> nameList = taxRep.getTaxCategoryNamesList();
-					if(!nameList.contains(taxName))
-					{
-						taxRep.addTaxCategory(tax);
-						JOptionPane.showMessageDialog(null, "TAX CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-						tFieldTaxName.setText("");
-						tFieldTaxPercent.setText("");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "TAX CATEGORY EXISTS", "ERROR", JOptionPane.ERROR_MESSAGE);
-					}
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				if(tFieldTaxPercent.getText().toString().isEmpty() || tFieldTaxName.getText().toString().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "EMPTY FIELDS", "ERROR", JOptionPane.OK_OPTION );
 				}
+				else {
+					
+					String taxName = tFieldTaxName.getText().toUpperCase();
+					double taxPercent = Double.parseDouble(tFieldTaxPercent.getText());
+					
+					TaxCategory tax = new TaxCategory(taxName, taxPercent);
+					TaxCategoryRepository taxRep = new TaxCategoryRepository();
+					try {
+						
+						List<String> nameList = taxRep.getTaxCategoryNamesList();
+						if(!nameList.contains(taxName))
+						{
+							taxRep.addTaxCategory(tax);
+							JOptionPane.showMessageDialog(null, "TAX CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+							tFieldTaxName.setText("");
+							tFieldTaxPercent.setText("");
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "TAX CATEGORY EXISTS", "ERROR", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+				}
+
 				
 			}
 		});

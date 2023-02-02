@@ -135,7 +135,12 @@ public class MainFrame extends JFrame {
 						}
 						else if(x.getDesignation().toString().equals("MANAGER"))
 						{
-							ManagerFrame manFrame = new ManagerFrame();
+							ManagerFrame manFrame = null;
+							try {
+								manFrame = new ManagerFrame();
+							} catch (FileNotFoundException e1) {
+								e1.printStackTrace();
+							}
 							manFrame.setTitle("Welcome " + textField_Name.getText());
 							manFrame.setVisible(true);
 							textField_Name.setText("");
@@ -145,7 +150,13 @@ public class MainFrame extends JFrame {
 						}
 						else if(x.getDesignation().toString().equals("ADMIN"))
 						{
-							AdminFrame adFrame = new AdminFrame();
+							AdminFrame adFrame = null;
+							try {
+								adFrame = new AdminFrame();
+							} catch (FileNotFoundException e1) {
+								
+								e1.printStackTrace();
+							}
 							adFrame.setTitle("Welcome " + textField_Name.getText());
 							adFrame.setVisible(true);
 							textField_Name.setText("");

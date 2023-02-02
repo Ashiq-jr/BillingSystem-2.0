@@ -74,15 +74,21 @@ public class RemoveACategoryFrame extends JFrame {
 		
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				String remove = cBoxCategory.getSelectedItem().toString();
-				try {
-					categoryRep.removeCategory(remove);
-					JOptionPane.showMessageDialog(null, "CATEGORY REMOVED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-					cBoxCategory.setSelectedItem(null);
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "EXCEPTION", "ERROR", JOptionPane.ERROR_MESSAGE);
+				if(cBoxCategory.getSelectedItem() == null)
+				{
+					JOptionPane.showMessageDialog(null, "EMPTY FIELDS", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
+				else {
+					String remove = cBoxCategory.getSelectedItem().toString();
+					try {
+						categoryRep.removeCategory(remove);
+						JOptionPane.showMessageDialog(null, "CATEGORY REMOVED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+						cBoxCategory.setSelectedItem(null);
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(null, "EXCEPTION", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				
 			}
 		});
 		

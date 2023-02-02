@@ -1,6 +1,5 @@
 package managerFrame;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,8 +14,11 @@ import javax.swing.border.LineBorder;
 import bill.Bill;
 import bill.BillRepository;
 import bill.StoredBillInfoRepository;
-import category.Category;
 import category.CategoryRepository;
+import employee.Employee;
+import employee.EmployeeRepository;
+import loginInfo.LoginInfo;
+import loginInfo.LoginInfoRepository;
 import mainFrame.MainFrame;
 
 import java.awt.Color;
@@ -28,7 +30,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -58,6 +64,10 @@ public class ManagerFrame extends JFrame {
 	private JLabel lblEditTaxPercentage;
 	private JButton btnEditTaxPercent;
 	private JTextField tFieldEnterBillNumber;
+	private JLabel lblCurrentUser;
+	private JLabel lblLogTime;
+	private JLabel lblDate;
+	private static int empId = 0;
 	private JMenuBar menuBar;
 	private JMenu userMenu;
 	private JMenuItem logOut;
@@ -70,9 +80,9 @@ public class ManagerFrame extends JFrame {
 	private static List<String> billNumbersList = new ArrayList<String>();
 
 
-	public ManagerFrame() {
+	public ManagerFrame() throws FileNotFoundException {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 865, 726);
+		setBounds(100, 100, 865, 755);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -129,8 +139,24 @@ public class ManagerFrame extends JFrame {
 		lblTitle = new JLabel("MANAGER OPERATIONS");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setBounds(10, 10, 831, 77);
+		lblTitle.setBounds(10, 0, 831, 38);
 		contentPane.add(lblTitle);
+		
+		lblCurrentUser = new JLabel();
+		lblCurrentUser.setBounds(20, 26, 269, 26);
+		lblCurrentUser.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		contentPane.add(lblCurrentUser);
+		
+		lblLogTime = new JLabel();
+		lblLogTime.setBounds(20, 48, 269, 26);
+		lblLogTime.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		contentPane.add(lblLogTime);
+		
+		lblDate = new JLabel();
+		lblDate.setText("DATE : 23-01-2023");
+		lblDate.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		lblDate.setBounds(704, 26, 147, 26);
+		contentPane.add(lblDate);
 		
 		panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
@@ -230,6 +256,24 @@ public class ManagerFrame extends JFrame {
 		btnLoadEmpPerformance_1.setBounds(225, 216, 72, 26);
 		panel_1_1.add(btnLoadEmpPerformance_1);
 		
+		// // To Display Details such as Employee Name, date, time
+		
+		LoginInfoRepository logRep = new LoginInfoRepository();
+		LoginInfo info = logRep.getCurrentUser();
+		
+		EmployeeRepository empRep = new EmployeeRepository();
+		empId = Integer.parseInt(info.getName());
+		Employee employee = empRep.findEmployeeById(empId);
+		lblCurrentUser.setText("Welcome :" + " " + employee.getName() + " ( " + employee.getDesignation() + " )" );
+		
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+	    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH : mm");;
+		lblLogTime.setText("LOGGED-IN @ : "  + time.format(timeFormatter));
+		lblDate.setText("DATE : " + date.format(dateFormatter));
+		
+		
 		//Adding LogOut in Menu Bar and LogOut Action.
 		menuBar = new JMenuBar();
 		
@@ -276,25 +320,32 @@ public class ManagerFrame extends JFrame {
 		// Button to Add Category 		
 		btnAddProdCat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				CategoryRepository categoryRep = new CategoryRepository();
-				try {
-					List<String> catNamesList = categoryRep.getCategoryNamesList();
-					if(!catNamesList.contains(tFieldCategory.getText().toString()))
-					{
-						categoryRep.addCategory(tFieldCategory.getText().toString());
-						JOptionPane.showMessageDialog(null, "CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-						tFieldCategory.setText("");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "CATEGORY ALREADY EXISTS", "FAILED", JOptionPane.ERROR_MESSAGE);
-
-					}
-
-				} catch (IOException e1) {
-
+				if(tFieldCategory.getText().toString().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "EMPTY FIELD", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
+				else {
+					
+					CategoryRepository categoryRep = new CategoryRepository();
+					try {
+						List<String> catNamesList = categoryRep.getCategoryNamesList();
+						if(!catNamesList.contains(tFieldCategory.getText().toString()))
+						{
+							categoryRep.addCategory(tFieldCategory.getText().toString());
+							JOptionPane.showMessageDialog(null, "CATEGORY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+							tFieldCategory.setText("");
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "CATEGORY ALREADY EXISTS", "FAILED", JOptionPane.ERROR_MESSAGE);
+
+						}
+
+					} catch (IOException e1) {
+
+					}
+				}
+				
 			}
 		});
 		
@@ -438,12 +489,12 @@ public class ManagerFrame extends JFrame {
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "INVALID BILL NUMBER", "ERROR", JOptionPane.OK_OPTION);
+						JOptionPane.showMessageDialog(null, "INVALID BILL NUMBER", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "BILL NUMBER EMPTY", "ERROR", JOptionPane.OK_OPTION);
+					JOptionPane.showMessageDialog(null, "BILL NUMBER EMPTY", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				tFieldEnterBillNumber.setText("");
