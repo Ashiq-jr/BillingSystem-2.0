@@ -37,12 +37,12 @@ class StoreRepositoryTest {
     }
     
     @Test
-    @DisplayName("Should Not Write Empty Values in File")
-    public void shouldThrowIllegalArgumentExceptionGivenObjectWithEmptyFields()
+    @DisplayName("Should Not Write Illegal Store Field Values in File")
+    public void shouldThrowIllegalArgumentExceptionGivenObjectWithIllegalFields()
     {
     	StoreRepository repository = new StoreRepository();
-    	Address address = new Address("No:86", "Palakkarai", "Trichy", "Tamilnadu", 620007);
-    	Store expected = new Store("name",address, "", 9899998789l, "root.stores@gmail.com");
+    	Address address = new Address("No:86", "", "Trichy", "Tamilnadu", 620007);
+    	Store expected = new Store("name",address, "33EBLPM1907A1Z5", 9899998789l, "root.stores@gmail.com");
     	 Assertions.assertThrows(IllegalArgumentException.class, () -> {
              repository.updateStoreDetails(expected);
          });

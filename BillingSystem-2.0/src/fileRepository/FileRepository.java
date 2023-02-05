@@ -43,12 +43,6 @@ public class FileRepository {
 		return list = loadFileData(categoryInfoPath);
 	}
 	
-	public List<String[]> getSubCategoriesAsList() throws FileNotFoundException
-	{
-		list.clear();
-		return list = loadFileData(subCategoryInfoPath);
-	}
-	
 	public List<String[]> getTaxCategoriesAsList() throws FileNotFoundException
 	{
 		list.clear();
@@ -100,10 +94,6 @@ public class FileRepository {
 	{
 		writeNewInfoOnFile(categoryInfoPath, info);
 	}
-	public void addNewSubCategoryInfoOnFile(String info) throws IOException
-	{
-		writeNewInfoOnFile(subCategoryInfoPath, info);
-	}
 	public void addNewTaxCategoryInfoOnFile(String info) throws IOException
 	{
 		writeNewInfoOnFile(taxCategoryInfoPath, info);
@@ -111,10 +101,6 @@ public class FileRepository {
 	public void updateCategoryInfoOnFile(String info)throws IOException
 	{
 		overWriteDataInFile(categoryInfoPath, info);
-	}
-	public void updateSubCategoryInfoOnFile(String info)throws IOException
-	{
-		overWriteDataInFile(subCategoryInfoPath, info);
 	}
 	public void updateTaxCategoryInfoOnFile(String info)throws IOException
 	{

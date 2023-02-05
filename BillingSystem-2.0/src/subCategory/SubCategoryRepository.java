@@ -1,4 +1,4 @@
-package subCategory;
+ package subCategory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import fileRepository.FileRepository;
 
 public class SubCategoryRepository {
 	
-	
+	final String subCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\subcategory.txt";
 	static List<SubCategory> list = new ArrayList<SubCategory>();
 	static List<String> nameList = new ArrayList<String>();
 	
@@ -24,7 +24,7 @@ public class SubCategoryRepository {
 			list.clear();
 			
 			FileRepository fp = new FileRepository();
-			List<String[]> subCatList = fp.getSubCategoriesAsList();
+			List<String[]> subCatList = fp.loadFileData(subCategoryInfoPath);
 			for(String[] x : subCatList)
 			{
 				Category category = new Category(x[0]);
@@ -39,9 +39,15 @@ public class SubCategoryRepository {
 		
 		public void addSubCategory(SubCategory subcategory) throws IOException
 		{
+			nameList = getNameList();
+			if(nameList.contains(subcategory.getName()))
+			{
+				throw new IllegalArgumentException("SubCategory Already Exists.");
+			}
+			validateSubCategory(subcategory);
 			FileRepository fp = new FileRepository();
 			String info = "\n" + subcategory.getCategory().getName() + "|" + subcategory.getName();
-			fp.addNewSubCategoryInfoOnFile(info);
+			fp.writeNewInfoOnFile(subCategoryInfoPath, info);
 		}
 		
 		//Method to get List of Sub Category Names
@@ -80,8 +86,17 @@ public class SubCategoryRepository {
 			}
 			
 			FileRepository fp = new FileRepository();
-			fp.updateSubCategoryInfoOnFile(info.trim());
+			fp.overWriteDataInFile(subCategoryInfoPath, info.trim());
 			
+		}
+		
+		//Validate SubCategory
+		
+		private void validateSubCategory(SubCategory subCategory)
+		{
+			subCategory.validateName();
+			Category category = subCategory.getCategory();
+			category.ValidateName();
 		}
 
 		

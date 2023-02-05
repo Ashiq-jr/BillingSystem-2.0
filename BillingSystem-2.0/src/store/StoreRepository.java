@@ -1,6 +1,5 @@
 package store;
 
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +28,6 @@ public class StoreRepository extends Store {
 				String state = x[4];
 				int pinCode = Integer.parseInt(x[5]);
 				Address address = new Address(doorNo, area, city, state, pinCode);
-				this.validateAddress(address);
 				String gstNumber = x[6];
 				long mobileNum = Long.parseLong(x[7]);
 				String mailId = x[8];
@@ -43,7 +41,6 @@ public class StoreRepository extends Store {
 		public void updateStoreDetails(Store store) throws IOException 
 		{
 			this.validateStore(store);
-			this.validateAddress(store.getAddress());
 			Address address = store.getAddress();		
 			String temp = store.getName() + "|" + address.getDoorNo() + "|" + address.getArea() + "|" + address.city + "|" + address.getState() + "|" + address.getPincode() + "|" + store.getGstNumber() + "|" + store.getMobileNum() + "|" + store.getMailId();
 			FileRepository fp = new FileRepository();
@@ -58,17 +55,13 @@ public class StoreRepository extends Store {
 			store.validateGstNumber();
 			store.validateMobileNum();
 			store.validateMailId();
-			
-		}
-		
-		private void validateAddress(Address address) {
-			
+			Address address = store.getAddress();
 			address.validateArea();
 			address.validateDoorNumber();
 			address.validateCity();
 			address.validateState();
 			address.validatePinCode();
-			
 		}
+
 
 }
