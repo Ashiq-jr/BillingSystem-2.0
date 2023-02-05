@@ -1,9 +1,5 @@
 package store;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
-import fileRepository.FileRepository;
 
 public class Store {
 
@@ -48,6 +44,47 @@ public class Store {
 	}
 	
 	
+	
+	//Validation
+	public void validateStoreName()
+	{
+		if(this.name.isBlank() || this.name.length() < 7 || this.name.length() > 25)
+		{
+			throw new IllegalArgumentException("Store Name Length is Either 0 or Greater than 25.");
+		}
+	}
+	
+	public void validateGstNumber() {
+		
+		if(this.gstNumber.isBlank() || this.gstNumber.length() < 10 || this.gstNumber.length() > 20)
+		{
+			throw new IllegalArgumentException("GST Number Length is Either 0 or Greater than 20.");
+		}
+		
+	}
+	
+    public void validateMobileNum()
+    {
+        String number = String.valueOf(this.mobileNum);
+        if(number.length() != 10 )
+        {
+            throw new IllegalArgumentException("Invalid Number Length");
+        }
+        else if(!(number.startsWith("1") || number.startsWith("2") || number.startsWith("3")|| number.startsWith("4") || 
+        number.startsWith("5") || number.startsWith("6") ||number.startsWith("7")|| number.startsWith("8") || number.startsWith("9")))
+        {
+            throw new IllegalArgumentException("Invalid Mobile Number");
+        }
+    }
+    
+    public void validateMailId() {
+    	
+    	if(this.mailId.isBlank() || this.mailId.length() < 15)
+    	{
+    		throw new IllegalArgumentException("Invalid E-Mail Id.");
+    	}
+    	
+    }
 	
 	@Override
 	public String toString()

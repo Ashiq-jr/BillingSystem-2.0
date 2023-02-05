@@ -13,7 +13,6 @@ public class FileRepository {
 	
 	static List<String[]> list = new ArrayList<String[]>();
 	
-	final String storeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\store.txt";
 	final String loginInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\logDetails.txt";
 	final String employeeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\employeeInfo.txt";
 	final String productInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\product.txt";
@@ -25,11 +24,6 @@ public class FileRepository {
 
 	
 	//Reading file
-	public List<String[]> getStoreDetailsAsList() throws FileNotFoundException
-	{
-		list.clear();
-		return list = loadFileData(storeInfoPath);
-	}
 	
 	public List<String[]> getOperatorLoginInfosAsList() throws FileNotFoundException
 	{
@@ -96,12 +90,7 @@ public class FileRepository {
 	{
 		overWriteDataInFile(loginInfoPath, info);
 	}
-	
-	public void updateStoreInfoOnFile(String info) throws IOException
-	{
-		overWriteDataInFile(storeInfoPath, info);
-	}
-	
+
 	public void addNewProductInfoOnFile(String info) throws IOException
 	{
 		writeNewInfoOnFile(productInfoPath, info);
@@ -149,34 +138,56 @@ public class FileRepository {
 	
 	
 	
+	//Methods to Load, write and OverWrite File.
 	
-	
-	public static List<String[]> loadFileData(String path) throws FileNotFoundException
+	public List<String[]> loadFileData(String path) throws FileNotFoundException
 	{
 		File file = new File(path);
-		list.clear();
-		Scanner sc = new Scanner(file);
-		while(sc.hasNext())
+		if(file.exists())
 		{
-			String temp[] = sc.nextLine().split("\\|");
-			list.add(temp);
+			list.clear();
+			Scanner sc = new Scanner(file);
+			while(sc.hasNext())
+			{
+				String temp[] = sc.nextLine().split("\\|");
+				list.add(temp);
+			}
+			sc.close();
+			return list;
 		}
-		sc.close();
-		return list;
+		else {
+			throw new FileNotFoundException("Invalid File Path");
+		}
+		
 	}
 	
-	public static void writeNewInfoOnFile(String path, String info) throws IOException
+	public void writeNewInfoOnFile(String path, String info) throws IOException
 	{
-		FileWriter writer = new FileWriter(path, true);
-		writer.write(info);
-		writer.close();		
+		File file = new File(path);
+		if(file.exists())
+		{
+			FileWriter writer = new FileWriter(path, true);
+			writer.write(info);
+			writer.close();	
+		}
+		else {
+			throw new FileNotFoundException("Invalid File Path");
+		}
+			
 	}
 	
-	public static void overWriteDataInFile(String path, String info) throws IOException
+	public void overWriteDataInFile(String path, String info) throws IOException
 	{
-		FileWriter writer = new FileWriter(path);
-		writer.write(info);
-		writer.close();		
+		File file = new File(path);
+		if(file.exists())
+		{
+			FileWriter writer = new FileWriter(path);
+			writer.write(info);
+			writer.close();		
+		}
+		else {
+			throw new FileNotFoundException("Invalid File Path");
+		}
 	}
 
 }
