@@ -3,12 +3,6 @@ package fileRepository;
 import java.io.*;
 import java.util.*;
 
-import category.Category;
-import product.Product;
-import product.Status;
-import product.TaxCategory;
-import subCategory.SubCategory;
-
 public class FileRepository {
 	
 	static List<String[]> list = new ArrayList<String[]>();
@@ -35,12 +29,6 @@ public class FileRepository {
 	{
 		list.clear();
 		return list = loadFileData(employeeInfoPath);
-	}
-	
-	public List<String[]> getCategoriesAsList() throws FileNotFoundException
-	{
-		list.clear();
-		return list = loadFileData(categoryInfoPath);
 	}
 	
 	public List<String[]> getTaxCategoriesAsList() throws FileNotFoundException

@@ -9,16 +9,16 @@ import fileRepository.FileRepository;
 
 public class CategoryRepository {
 	
-	
+	final String categoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\category.txt";
 	static List<Category> list = new ArrayList<Category>();
 	static List<String> categoryNamesList = new ArrayList<String>();
 	
-	//Method to Load Categories From File
+		//Method to Load Categories From File
 		public List<Category> loadCategory() throws IOException
 		{
 			list.clear();
 			FileRepository fp = new FileRepository();
-			List<String[]> al = fp.getCategoriesAsList();
+			List<String[]> al = fp.loadFileData(categoryInfoPath);
 			
 			for(String[] x : al)
 			{
@@ -40,14 +40,24 @@ public class CategoryRepository {
 				categoryNamesList.add(x.getName());
 			}
 			
-		return categoryNamesList;
+			return categoryNamesList;
 		}
 		
 		//Method to Add Category	
 		public void addCategory(String name) throws IOException
 		{
-			FileRepository fp = new FileRepository();
-			fp.addNewCategoryInfoOnFile("\n" + name.toUpperCase());
+			categoryNamesList = getCategoryNamesList();
+			if(categoryNamesList.contains(name))
+			{
+				throw new IllegalArgumentException("Category Already Exists.");
+			}
+			else {
+				Category category = new Category(name);
+				validateCategory(category);
+				FileRepository fp = new FileRepository();
+				fp.writeNewInfoOnFile(categoryInfoPath, "\n" + name);
+			}
+			
 		}
 		
 		//Method to Remove a Category
@@ -70,8 +80,15 @@ public class CategoryRepository {
 				}
 			}
 			FileRepository fp = new FileRepository();
-			fp.updateCategoryInfoOnFile(info.trim());
+			fp.overWriteDataInFile(categoryInfoPath, info.trim());;
 			
+		}
+		
+		//Validate Category
+		
+		private void validateCategory(Category category)
+		{
+			category.ValidateName();
 		}
 
 }
