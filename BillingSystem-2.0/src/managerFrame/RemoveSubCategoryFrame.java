@@ -141,4 +141,3 @@ public class RemoveSubCategoryFrame extends JFrame {
 			});
 	}
 }
-

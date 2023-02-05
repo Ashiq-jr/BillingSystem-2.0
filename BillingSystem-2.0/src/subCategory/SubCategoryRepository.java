@@ -1,4 +1,4 @@
- package subCategory;
+package subCategory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
