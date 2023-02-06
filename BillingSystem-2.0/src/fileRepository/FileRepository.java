@@ -9,9 +9,6 @@ public class FileRepository {
 	
 	final String loginInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\logDetails.txt";
 	final String employeeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\employeeInfo.txt";
-	final String productInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\product.txt";
-	final String categoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\category.txt";
-	final String subCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\subcategory.txt";
 	final String taxCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\taxCategory.txt";
 	final String customerInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\customer.txt";
 	final String storedBillInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\storedBillInfo.txt";
@@ -48,15 +45,7 @@ public class FileRepository {
 		list.clear();
 		return list = loadFileData(storedBillInfoPath);
 	}
-	
-	// Return the Path of ProductInfo File
-	
-	public String getProductInfoPath()
-	{
-		return productInfoPath;
-	}
-	
-	
+		
 	//Writing
 	public void writeNewInfoOnEmpInfoFile(String info) throws IOException
 	{
@@ -73,31 +62,16 @@ public class FileRepository {
 		overWriteDataInFile(loginInfoPath, info);
 	}
 
-	public void addNewProductInfoOnFile(String info) throws IOException
-	{
-		writeNewInfoOnFile(productInfoPath, info);
-	}
-	
-	public void addNewCategoryInfoOnFile(String info) throws IOException
-	{
-		writeNewInfoOnFile(categoryInfoPath, info);
-	}
 	public void addNewTaxCategoryInfoOnFile(String info) throws IOException
 	{
 		writeNewInfoOnFile(taxCategoryInfoPath, info);
 	}
-	public void updateCategoryInfoOnFile(String info)throws IOException
-	{
-		overWriteDataInFile(categoryInfoPath, info);
-	}
+	
 	public void updateTaxCategoryInfoOnFile(String info)throws IOException
 	{
 		overWriteDataInFile(taxCategoryInfoPath, info);
 	}
-	public void updateProductInfoOnFile(String info)throws IOException
-	{
-		overWriteDataInFile(productInfoPath, info);
-	}
+
 	public void addNewCustomerInfoOnFile(String info) throws IOException
 	{
 		writeNewInfoOnFile(customerInfoPath, info);

@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 class CategoryRepositoryTest {
 
 	@Test
-    @DisplayName("Should Return a List Of SubCategory Objects")
-    public void shouldFetchSubCategoriesFromFile()
+    @DisplayName("Should Return a List Of Category Objects")
+    public void shouldFetchCategoriesFromFile()
     { 
     	List<Category> list = new ArrayList<Category>();
     	assertEquals(0, list.size());

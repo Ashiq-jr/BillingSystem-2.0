@@ -30,6 +30,30 @@ public class TaxCategory {
 		return value;
 	}
 	
+	//Validation
+	public void validateName()
+	{
+		if(this.getName().isBlank() || this.getName().length() < 2 || this.getName().length() > 15)
+		{
+			throw new IllegalArgumentException("Invalid Tax Name.");
+		}
+		else if( this.getName().startsWith("0") || this.getName().startsWith("1") || this.getName().startsWith("2") || this.getName().startsWith("3")|| this.getName().startsWith("4") || 
+				this.getName().startsWith("5") || this.getName().startsWith("6") ||this.getName().startsWith("7")|| this.getName().startsWith("8") || this.getName().startsWith("9") )
+		        {
+		            throw new IllegalArgumentException("Invalid Tax Name. ");
+		        }	
+	}
+	
+	public void validateTaxValue() {
+		
+		String valueString = String.valueOf(this.getValue());
+		
+		if(valueString.isBlank() || valueString.length() > 3 || valueString.startsWith("-"))
+		{
+			throw new IllegalArgumentException("Invalid Tax Value.");
+		}		
+	}
+	
 	
 	@Override
 	public String toString()
