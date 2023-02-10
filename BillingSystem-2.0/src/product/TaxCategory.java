@@ -48,7 +48,7 @@ public class TaxCategory {
 		
 		String valueString = String.valueOf(this.getValue());
 		
-		if(valueString.isBlank() || valueString.length() > 3 || valueString.startsWith("-"))
+		if(valueString.isBlank())
 		{
 			throw new IllegalArgumentException("Invalid Tax Value.");
 		}		

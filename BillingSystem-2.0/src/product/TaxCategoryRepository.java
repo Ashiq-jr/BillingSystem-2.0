@@ -9,7 +9,7 @@ import fileRepository.FileRepository;
 
 public class TaxCategoryRepository {
 
-	
+	final String taxCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\taxCategory.txt";	
 	static List<TaxCategory> list = new ArrayList<TaxCategory>();
 	static List<String> nameList = new ArrayList<String>();
 	
@@ -21,7 +21,7 @@ public class TaxCategoryRepository {
 			list.clear();
 			
 			FileRepository fp = new FileRepository();
-			List<String[]> taxList = fp.getTaxCategoriesAsList();
+			List<String[]> taxList = fp.loadFileData(taxCategoryInfoPath);
 			for(String[] x : taxList)
 			{
 				TaxCategory tax = new TaxCategory(x[0], Double.parseDouble(x[1]));
@@ -31,25 +31,6 @@ public class TaxCategoryRepository {
 			return list;
 		}
 		
-		//Method to Check if the Tax Slab Exists
-		
-		public int checkTaxCategory(String x) throws IOException
-		{
-			list.clear();
-			int count = 0;
-			list = this.loadTaxcategory();
-			for(TaxCategory z : list)
-			{
-				if(z.getName().toString().equals(x))
-				{
-					//return true;
-					count++;
-				}
-			}
-			return count;
-			
-		}
-		
 		// Method to get Tax Value Using the Name of the Tax Category
 		
 		public double getTaxValue(String name) throws IOException
@@ -57,23 +38,41 @@ public class TaxCategoryRepository {
 			double temp = 0;
 			list.clear();
 			list = this.loadTaxcategory();
-			for(TaxCategory x : list)
+			nameList.clear();
+			nameList = this.getTaxCategoryNamesList();
+			if(nameList.contains(name))
 			{
-				if(x.getName().equals(name))
+				for(TaxCategory x : list)
 				{
-					temp = x.getValue();
+					if(x.getName().equals(name))
+					{
+						temp = x.getValue();
+					}
 				}
+				return temp;
 			}
-			return temp;
+			else {
+				throw new IllegalArgumentException("Tax Category Doesnt Exist");
+			}
 		}
 		
 		// Method to Add New Tax Category
 		
 		public void addTaxCategory(TaxCategory tax) throws IOException
 		{
-			FileRepository fp = new FileRepository();
-			String info = "\n" + tax.getName() + "|" + tax.getValue();
-			fp.addNewTaxCategoryInfoOnFile(info);
+			nameList.clear();
+			nameList = this.getTaxCategoryNamesList();
+			if(nameList.contains(tax.getName()))
+			{
+				throw new IllegalArgumentException("TaxCategory Already Exists");
+			}
+			else {
+				validateTaxCategory(tax);
+				FileRepository fp = new FileRepository();
+				String info = "\n" + tax.getName() + "|" + tax.getValue();
+				fp.writeNewInfoOnFile(taxCategoryInfoPath, info);				
+			}
+			
 		}
 		
 		//Method to get List of Tax Category Names
@@ -95,36 +94,66 @@ public class TaxCategoryRepository {
 		{
 			list.clear();
 			list = this.loadTaxcategory();
-			Iterator<TaxCategory> itr = list.iterator();
-			String info = "";
-			while(itr.hasNext())
+			nameList.clear();
+			nameList = this.getTaxCategoryNamesList();
+			if(nameList.contains(name))
 			{
-				TaxCategory tax = (TaxCategory) itr.next();
-				if(!tax.getName().equals(name))
+				Iterator<TaxCategory> itr = list.iterator();
+				String info = "";
+				while(itr.hasNext())
 				{
-					info += tax.getName() + "|" + tax.getValue() + "\n";
+					TaxCategory tax = (TaxCategory) itr.next();
+					if(!tax.getName().equals(name))
+					{
+						info += tax.getName() + "|" + tax.getValue() + "\n";
+					}
 				}
+				FileRepository fp = new FileRepository();
+				fp.overWriteDataInFile(taxCategoryInfoPath, info.trim());
+			}
+			else {
+				throw new IllegalArgumentException("Tax Category Doesnt Exist.");
 			}
 			
-			FileRepository fp = new FileRepository();
-			fp.updateTaxCategoryInfoOnFile(info.trim());
 		}
 		
 		//Method to Edit a Tax Category
 		
-		public void editTaxCategory(TaxCategory taxCategory, int index) throws IOException
+		public void editTaxCategory(TaxCategory taxCategory) throws IOException
 		{
 			list.clear();
 			list = this.loadTaxcategory();
-			list.set(index, taxCategory);
-			Iterator<TaxCategory> itr = list.iterator();
-			String info = "";
-			while(itr.hasNext())
+			nameList.clear();
+			nameList = this.getTaxCategoryNamesList();
+			if(nameList.contains(taxCategory.getName()))
 			{
-				TaxCategory tax = (TaxCategory) itr.next();
-				info += tax.getName() + "|" + tax.getValue() + "\n";
+				Iterator<TaxCategory> itr = list.iterator();
+				String info = "";			
+				while(itr.hasNext())
+				{
+					TaxCategory tax = (TaxCategory) itr.next();
+					if(tax.getName().equals(taxCategory.getName()))
+					{
+						info += taxCategory.getName() + "|" + taxCategory.getValue() + "\n";
+					}
+					else {
+						info += tax.getName() + "|" + tax.getValue() + "\n";
+					}
+					
+				}
+				FileRepository fp = new FileRepository();			
+				fp.overWriteDataInFile(taxCategoryInfoPath, info.trim());
 			}
-			FileRepository fp = new FileRepository();
-			fp.updateTaxCategoryInfoOnFile(info.trim());
+			else {
+				throw new IllegalArgumentException("TaxCategory Doesnt Exist.");
+			}
+		}
+		
+		//Validate Tax Category
+		
+		private void validateTaxCategory(TaxCategory taxCategory)
+		{
+			taxCategory.validateName();
+			taxCategory.validateTaxValue();
 		}
 }

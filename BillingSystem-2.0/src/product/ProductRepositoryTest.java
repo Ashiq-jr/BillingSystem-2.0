@@ -16,7 +16,7 @@ class ProductRepositoryTest {
 
 	@Test
     @DisplayName("Should Return a TreeMap Of Product Objects")
-    public void shouldFetchSubCategoriesFromFile()
+    public void shouldFetchProductsFromFile()
     { 
     	TreeMap<Integer, Product> tMap = new TreeMap<Integer,Product>();
     	assertEquals(0, tMap.size());
@@ -36,20 +36,14 @@ class ProductRepositoryTest {
     {
     	ProductRepository repository = new ProductRepository();
     	String actualName = "RAJMA-500G";
+    	Product product = null;
     	int actualId = 0;
     	try {
     		actualId = repository.getIdUsingName(actualName);
+    		product = repository.getProductUsingName(actualName);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-    	Product product = null;
-    	try {
-			product = repository.getProductUsingName(actualName);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	
+		}  	
     	String expectedName = product.getName();
     	int expectedid = product.getId();
     	assertEquals(expectedName, actualName);
@@ -145,7 +139,7 @@ class ProductRepositoryTest {
     {
     	Category category = new Category("test");
     	SubCategory subCategory = new SubCategory(category, "testsub");
-    	TaxCategory taxCategory = new TaxCategory("Test", 2.0);
+    	TaxCategory taxCategory = new TaxCategory("NO", 0);
     	Double unitPrice = 19.0;
     	ProductRepository repository = new ProductRepository();
     	int id = 0;
@@ -184,7 +178,7 @@ class ProductRepositoryTest {
 
     	Category category = new Category("test");
     	SubCategory subCategory = new SubCategory(category, "testsub");
-    	TaxCategory taxCategory = new TaxCategory("Test", 2.0);
+    	TaxCategory taxCategory = new TaxCategory("NO", 0);
     	Double unitPrice = 19.0;
     	ProductRepository repository = new ProductRepository();
     	int id = 0;
@@ -210,12 +204,11 @@ class ProductRepositoryTest {
     	int id= 0;
     	try {
     		id = repository.getIdUsingName("TestApple");
-    		//repository.addNewProduct(product);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
     	double updatedUnitPrice = 20.0;
-    	TaxCategory updatedTaxCategory = new TaxCategory("Test2", 0.0);
+    	TaxCategory updatedTaxCategory = new TaxCategory("MID", 12.0);
     	Product product2 = new Product(id, "TestApple", category, subCategory, updatedUnitPrice, updatedTaxCategory, Status.DISCONTINUED);
     	try {
     		repository.editProduct(product2);
@@ -231,8 +224,8 @@ class ProductRepositoryTest {
 			e.printStackTrace();
 		}
     	assertEquals(updatedProduct.getUnitPrice(), updatedUnitPrice);
-    	assertEquals(updatedProduct.getTaxCategory().getName(), "Test2");
-    	assertEquals(updatedProduct.getTaxCategory().getValue(), 0.0);
+    	assertEquals(updatedProduct.getTaxCategory().getName(), "MID");
+    	assertEquals(updatedProduct.getTaxCategory().getValue(), 12.0);
     	assertEquals(updatedProduct.getStatus(), Status.DISCONTINUED);
     	 
     }

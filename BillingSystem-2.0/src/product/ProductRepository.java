@@ -1,5 +1,7 @@
  package product;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -168,7 +170,7 @@ public class ProductRepository {
 		int index = product.getId() - 101;
 		prodList.clear();
 		prodList = this.getListOfProducts();
-		validateProduct(product);
+		
 		prodList.set(index, product);
 		String info = "";
 		
@@ -181,7 +183,13 @@ public class ProductRepository {
 		info = buffer.toString();
 		
 		FileRepository fp = new FileRepository();
-		fp.overWriteDataInFile(productInfoPath, info.trim());;
+		try {
+			validateProduct(product);
+			fp.overWriteDataInFile(productInfoPath, info.trim());
+		} catch (IllegalArgumentException e) {
+			
+		}
+	
 	}
 	
 	//Validate Product

@@ -111,12 +111,12 @@ public class EditTaxPercentFrame extends JFrame {
 				if(cBoxTaxCategory.getSelectedItem() != null && tFieldPercentage.getText() != null)
 				{
 					String catName = cBoxTaxCategory.getSelectedItem().toString();
-					int index = cBoxTaxCategory.getSelectedIndex();
+					//int index = cBoxTaxCategory.getSelectedIndex();
 					double percent = Double.parseDouble(tFieldPercentage.getText());
 					TaxCategory taxCategory = new TaxCategory(catName, percent);
 					TaxCategoryRepository taxRep = new TaxCategoryRepository();
 					try {
-						taxRep.editTaxCategory(taxCategory, index);
+						taxRep.editTaxCategory(taxCategory);
 						JOptionPane.showMessageDialog(null, "TAX CATEGORY UPDATED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 					} catch (IOException e1) {
 						e1.printStackTrace();

@@ -8,7 +8,6 @@ public class FileRepository {
 	static List<String[]> list = new ArrayList<String[]>();
 	
 	final String loginInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\logDetails.txt";
-	final String employeeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\employeeInfo.txt";
 	final String taxCategoryInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\taxCategory.txt";
 	final String customerInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\customer.txt";
 	final String storedBillInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\storedBillInfo.txt";
@@ -22,18 +21,6 @@ public class FileRepository {
 		return list = loadFileData(loginInfoPath);
 	}
 	
-	public List<String[]> getEmployeeDetailsAsList() throws FileNotFoundException
-	{
-		list.clear();
-		return list = loadFileData(employeeInfoPath);
-	}
-	
-	public List<String[]> getTaxCategoriesAsList() throws FileNotFoundException
-	{
-		list.clear();
-		return list = loadFileData(taxCategoryInfoPath);
-	}
-	
 	public List<String[]> getCustomerDetailsAsList() throws FileNotFoundException
 	{
 		list.clear();
@@ -45,12 +32,6 @@ public class FileRepository {
 		list.clear();
 		return list = loadFileData(storedBillInfoPath);
 	}
-		
-	//Writing
-	public void writeNewInfoOnEmpInfoFile(String info) throws IOException
-	{
-		writeNewInfoOnFile(employeeInfoPath, info);
-	}
 	
 	public void writeNewInfoOnLoginInfoFile(String info) throws IOException
 	{
@@ -61,17 +42,7 @@ public class FileRepository {
 	{
 		overWriteDataInFile(loginInfoPath, info);
 	}
-
-	public void addNewTaxCategoryInfoOnFile(String info) throws IOException
-	{
-		writeNewInfoOnFile(taxCategoryInfoPath, info);
-	}
 	
-	public void updateTaxCategoryInfoOnFile(String info)throws IOException
-	{
-		overWriteDataInFile(taxCategoryInfoPath, info);
-	}
-
 	public void addNewCustomerInfoOnFile(String info) throws IOException
 	{
 		writeNewInfoOnFile(customerInfoPath, info);

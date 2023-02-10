@@ -1,16 +1,19 @@
 package employee;
 
+
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+
 import fileRepository.FileRepository;
 
 public class EmployeeRepository {
 	
-	
+	final String employeeInfoPath = "C:\\Users\\ashiq\\git\\BillingSystem-2.0\\BillingSystem-2.0\\src\\resources\\employeeInfo.txt";
 	static TreeMap<Integer,Employee> tMap = new TreeMap<Integer,Employee>();
 	static List<Integer> empIdList = new ArrayList<Integer>();
 	
@@ -22,7 +25,7 @@ public class EmployeeRepository {
 	public TreeMap<Integer, Employee> loadEmployeeInfo() throws FileNotFoundException
 	{
 		FileRepository fp = new FileRepository();
-		List<String[]> list = fp.getEmployeeDetailsAsList();
+		List<String[]> list = fp.loadFileData(employeeInfoPath);
 		for(String[] x : list)
 		{
 			int id = Integer.parseInt(x[0]);
@@ -46,6 +49,7 @@ public class EmployeeRepository {
 		{
 			empIdList.add(x);
 		}
+		empIdList.sort(null);
 		return empIdList;
 	}
 	
@@ -55,16 +59,24 @@ public class EmployeeRepository {
 	{
 		tMap.clear();
 		tMap = this.loadEmployeeInfo();
-		Employee employee = new Employee();
-		for(Integer x : tMap.keySet())
+		empIdList.clear();
+		this.getEmployeeIdList();
+		if(empIdList.contains(id))
 		{
-			if(x == id)
+			Employee employee = new Employee();
+			for(Integer x : tMap.keySet())
 			{
-				employee = tMap.get(x);
+				if(x == id)
+				{
+					employee = tMap.get(x);
+				}
 			}
+			
+			return employee;
 		}
-		
-		return employee;
+		else {
+			throw new IllegalArgumentException("Invalid Id ");
+		}
 	}
 	
 	
@@ -76,16 +88,26 @@ public class EmployeeRepository {
 		tMap = this.loadEmployeeInfo();
 		Employee employee = new Employee();
 		Employee tempEmployee = new Employee();
-		for(Integer x : tMap.keySet())
-		{
-			employee = tMap.get(x);
-			if(employee.getName().equals(name))
-			{
-				tempEmployee = employee;
-			}
-		}
+		empIdList.clear();
+		this.getEmployeeIdList();
 		
-		return tempEmployee;
+		int id = this.getIdUsingName(name);
+		if(empIdList.contains(id))
+		{
+			for(Integer x : tMap.keySet())
+			{
+				employee = tMap.get(x);
+				if(employee.getName().equals(name))
+				{
+					tempEmployee = employee;
+				}
+			}
+			
+			return tempEmployee;			
+		}
+		else {
+			throw new IllegalArgumentException("Invalid Name. ");
+		}
 	}
 	
 	// Method to get Employee Name Using His Id
@@ -96,17 +118,53 @@ public class EmployeeRepository {
 		tMap = this.loadEmployeeInfo();
 		Employee employee = new Employee();
 		String name = "";
+		empIdList.clear();
+		this.getEmployeeIdList();
+		if(empIdList.contains(id))
+		{
+			for(Integer x : tMap.keySet())
+			{
+				employee = tMap.get(x);
+				if(employee.getId() == id)
+				{
+					name = employee.getName();
+				}
+			}
+			
+			return name;
+		}
+		else {
+			throw new IllegalArgumentException("Invalid Id");
+		}
+	}
+	
+	// Method to get Employee Id Using His Name
+	
+	public int getIdUsingName(String name) throws FileNotFoundException
+	{
+		tMap.clear();
+		tMap = this.loadEmployeeInfo();
+		Employee employee = new Employee();
+		int id  = 0;
+		
 		for(Integer x : tMap.keySet())
 		{
 			employee = tMap.get(x);
-			if(employee.getId() == id)
+			if(employee.getName().equals(name))
 			{
-				name = employee.getName();
+				id = employee.getId();
 			}
 		}
+		if(id != 0)
+		{
+			return id;
+		}
+		else {
+			throw new IllegalArgumentException("Invalid Name.");
+		}
 		
-		return name;
 	}
+		
 	
 	//Method to Generate New Employee Id
 	
@@ -135,17 +193,94 @@ public class EmployeeRepository {
 		empIdList = this.getEmployeeIdList();
 		if(empIdList.contains(id)) return true;
 		
-		return false;
+		else {
+			throw new IllegalArgumentException("Invalid Id.");
+		}
 		
+	}
+	
+	// Method to Check if A Phone Number Already Exists
+	
+	public boolean checkIfPhNumberExists(long phNumber) throws FileNotFoundException 
+	{
+		this.loadEmployeeInfo();
+		for(Integer x : tMap.keySet())
+		{
+			Employee employee = tMap.get(x);
+			if(phNumber == employee.getMobileNum())
+			{
+				throw new IllegalArgumentException("Mobile Number Already Exists.");
+			}
+		}
+		
+		return false;		
+	}	
+	
+	// Method to Check if A Email Already Exists
+	
+	public boolean checkIfEmailExists(String mailId) throws FileNotFoundException 
+	{
+		this.loadEmployeeInfo();
+		for(Integer x : tMap.keySet())
+		{
+			Employee employee = tMap.get(x);
+			if(mailId.equals(employee.getMailId()))
+			{
+				throw new IllegalArgumentException("Mail Id Already Exists.");
+			}
+		}
+		
+		return false;		
 	}
 	
 	//Method to Add New Employee Using the Object Received as Argument.
 	
 	public void addEmployee(Employee employee) throws IOException
-	{		
-		String temp = "\n" + String.valueOf(employee.getId()) + "|" + employee.getName() + "|" + String.valueOf(employee.getMobileNum()) + "|" + employee.getMailId() + "|" + employee.getDesignation().toString();
-		FileRepository fp = new FileRepository();
-		fp.writeNewInfoOnEmpInfoFile(temp);
+	{	
+		validateEmployee(employee);	
+		empIdList.clear();
+		this.getEmployeeIdList();
+		if(empIdList.contains(employee.getId()) || this.checkIfEmailExists(employee.getMailId()) || this.checkIfPhNumberExists(employee.getMobileNum()))
+		{
+			throw new IllegalArgumentException("Employee Details Already Exists.");
+		}
+		else {
+			String temp = "\n" + String.valueOf(employee.getId()) + "|" + employee.getName() + "|" + String.valueOf(employee.getMobileNum()) + "|" + employee.getMailId() + "|" + employee.getDesignation().toString();
+			FileRepository fp = new FileRepository();
+			fp.writeNewInfoOnFile(employeeInfoPath, temp);
+		}
+		
+	}
+	
+	//Method to Remove an Employee
+	
+	public void removeEmploee(int id) throws IOException
+	{
+		this.loadEmployeeInfo();
+		StringBuilder info = new StringBuilder();
+		for(Integer x : tMap.keySet())
+		{
+			Employee employee = tMap.get(x);
+			if(employee.getId() != id)
+			{
+				info.append(employee.getId() + "|" + employee.getName() + "|" + employee.getMobileNum() + "|" + employee.getMailId() + "|" + employee.getDesignation() + "\n");
+			}			
+		}
+		FileRepository repository = new FileRepository();
+		repository.overWriteDataInFile(employeeInfoPath, info.toString().trim());
+		
+	}
+	
+	//Validate
+	
+	private void validateEmployee(Employee employee)
+	{
+		employee.validateId();
+		employee.validateName();
+		employee.validateMailId();
+		employee.validateMobileNum();
+		Designation designation = employee.getDesignation();
+		designation.validateDesignation(designation.toString());
 	}
 
 }
